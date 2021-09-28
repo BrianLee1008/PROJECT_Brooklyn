@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="carculator_black">#000000</color>
+    <color name="carculator_red">#B22222</color>
+    <color name="carculator_white">#FFFFFF</color>
+    <color name="carculator_darkgray">#202020</color>
+    <color name="carculator_orenge">#FF8C00</color>
+
+    <color name="okiid_darkblue">#04314e</color>
+
+
+
+    <color name="mone_skin">#E2D2D2</color>
+    <color name="mone_darksky">#BFC8D7</color>
+    <color name="mone_yellow">#E3E2B4</color>
+    <color name="mone_green">#A2B59F</color>
+    <color name="mone_long_green">#6E836B</color>
+    <color name="mone_extra_long_green">#425140</color>
+    <color name="mone_darkblue">#9197B5</color>
+
+    <color name="dark_4">#221f1f</color>
+    <color name="dark_3">#242726</color>
+    <color name="dark_2">#2e3233</color>
+    <color name="dark_1">#263238</color>
+
+    <color name="carmel_skin">#F5F5DC</color>
+    <color name="misty_rose">#FFE4E1</color>
+
+</resources>
