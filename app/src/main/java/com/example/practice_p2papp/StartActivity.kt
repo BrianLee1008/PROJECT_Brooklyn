@@ -16,6 +16,7 @@ class StartActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		setStartButtonListener()
+		setSignInButtonListener()
 	}
 
 	private fun setStartButtonListener(){
@@ -23,6 +24,9 @@ class StartActivity : AppCompatActivity() {
 			val intent = Intent(this, MainActivity::class.java)
 			startActivity(intent)
 		}
+	}
+
+	private fun setSignInButtonListener(){
 
 	}
 }

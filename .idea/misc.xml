@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/add_image.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/chat.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/no_stroke_box.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/person.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/selector_menu_color.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/sign_button.xml" value="0.3764102564102564" />
@@ -17,9 +18,9 @@
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/fragment_chatlist.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/fragment_home.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/fragment_mypage.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_article.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_article.xml" value="0.33" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat_list.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat_list.xml" value="0.5" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36614583333333334" />
       </map>
     </option>

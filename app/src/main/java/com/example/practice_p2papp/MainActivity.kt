@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
 	private val chatRoomListFragment = ChatListFragment()
 	private val myPageFragment = MyPageFragment()
 
+
 	private lateinit var binding: ActivityMainBinding
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
