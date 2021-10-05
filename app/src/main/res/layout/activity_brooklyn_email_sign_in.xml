@@ -5,19 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".signinup.SignUpActivity">
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    tools:context=".signinup.BrooklynEmailSignInActivity">
 
 
             <ImageView
@@ -37,7 +25,7 @@
 
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/wemakeprice_bold"
-                android:text="가입을 위해 필수정보를 적어주세요"
+                android:text="로그인을 위해 이메일과 비밀번호를 적어주세요"
                 android:textColor="@color/mone_long_green"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +36,7 @@
                 android:id="@+id/id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="60dp"
                 android:fontFamily="@font/wemakeprice_semibold"
 
                 android:text="이메일"
@@ -137,81 +125,25 @@
                 app:layout_constraintTop_toBottomOf="@id/passwordEditText"
                 app:layout_constraintStart_toStartOf="@id/passwordEditText"/>
 
-            <TextView
-                android:id="@+id/passwordCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/wemakeprice_semibold"
-
-                android:text="비밀번호 재확인"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
-
-            <EditText
-                android:id="@+id/passwordCheckEditText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/simple_box"
-                android:fontFamily="@font/wemakeprice_regular"
-                android:inputType="textPassword"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="12dp"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/passwordCheck"
-                tools:text="Password" />
-
-            <TextView
-                android:id="@+id/checkPasswordEmptyCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="필수 정보입니다."
-                android:textColor="@color/carculator_red"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordCheckEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordCheckEditText"/>
-
-            <TextView
-                android:id="@+id/checkPasswordErrorCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="일치하지 않습니다."
-                android:textColor="@color/carculator_red"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordCheckEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordCheckEditText"/>
-
 
 
             <!--EditText가 비어있으면 버튼 비활성화 시킬 것이기 때문에 enabled 값 false로-->
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/signUpButton"
+                android:id="@+id/signInButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="34dp"
                 android:layout_marginEnd="4dp"
                 android:background="@drawable/sign_button"
                 android:fontFamily="@font/wemakeprice_semibold"
-                android:text="다음으로 넘어가기"
+                android:text="로그인 하기"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/passwordCheckEditText" />
+                app:layout_constraintTop_toBottomOf="@id/passwordErrorCheck" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

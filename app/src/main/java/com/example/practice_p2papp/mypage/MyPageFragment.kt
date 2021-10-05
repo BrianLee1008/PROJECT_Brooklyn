@@ -28,6 +28,10 @@ class MyPageFragment  : Fragment() {
 
 	}
 
+	private fun setSignOutButtonListener(){
+		binding.
+	}
+
 
 	override fun onDestroyView() {
 		super.onDestroyView()

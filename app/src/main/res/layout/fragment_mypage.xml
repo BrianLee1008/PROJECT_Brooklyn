@@ -6,4 +6,20 @@
     android:padding="24dp">
 
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그아웃"
+        android:background="@drawable/sign_button"
+        android:textColor="@color/white"
+        android:fontFamily="@font/wemakeprice_semibold"
+        android:textSize="40sp"
+        android:padding="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

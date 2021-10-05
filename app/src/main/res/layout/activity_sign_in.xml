@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".signinup.SignUpActivity">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/mainLogoImageView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.05" />
+
+            <TextView
+                android:id="@+id/detailReferenceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/wemakeprice_bold"
+                android:text="조금만 더 이야기 해 주시면 회원가입이 완료됩니다!"
+                android:textColor="@color/mone_long_green"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mainLogoImageView" />
+
+
+            <TextView
+                android:id="@+id/nickName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/wemakeprice_semibold"
+
+                android:text="닉네임"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detailReferenceTextView" />
+
+            <EditText
+                android:id="@+id/nickNameEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/simple_box"
+                android:fontFamily="@font/wemakeprice_regular"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="12dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nickName"
+                tools:text="NickName" />
+
+            <TextView
+                android:id="@+id/nickNameEmptyCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="필수 정보입니다."
+                android:textColor="@color/carculator_red"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/nickNameEditText"
+                app:layout_constraintTop_toBottomOf="@id/nickNameEditText" />
+
+
+            <!--EditText가 비어있으면 버튼 비활성화 시킬 것이기 때문에 enabled 값 false로-->
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/signUpButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34dp"
+                android:background="@drawable/sign_button"
+                android:fontFamily="@font/wemakeprice_semibold"
+                android:text="가입하기"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nickNameEditText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
