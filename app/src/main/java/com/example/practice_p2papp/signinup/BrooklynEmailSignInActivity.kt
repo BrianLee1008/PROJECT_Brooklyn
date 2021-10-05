@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.example.practice_p2papp.MainActivity
 import com.example.practice_p2papp.databinding.ActivityBrooklynEmailSignInBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -22,13 +23,44 @@ class BrooklynEmailSignInActivity : AppCompatActivity() {
 		binding = ActivityBrooklynEmailSignInBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
+		if (auth.currentUser != null){
+			finish()
+		}
+
 		loadSignReferenceToAuth()
+
 	}
 
 	private fun loadSignReferenceToAuth() = with(binding){
 		signInButton.setOnClickListener {
 			val email = emailEditText.text.toString()
 			val passwordd = passwordEditText.text.toString()
+
+			// 예외처리... 중복되는데 확장함수로 뺄 순 없나?
+			val emailEditTextEmpty = emailEditText.text.isEmpty()
+			val passwordEditTextEmpty = passwordEditText.text.isEmpty()
+
+
+			when {
+				emailEditTextEmpty -> {
+					emailErrorCheck.isVisible = true
+					return@setOnClickListener
+				}
+				passwordEditTextEmpty -> {
+					passwordErrorCheck.isVisible = true
+					emailErrorCheck.isVisible = false
+					return@setOnClickListener
+				}
+				// 8자 이하 예외처리 할려했는데 안됨
+				/*untilEtePassword -> {
+					passwordErrorCheck.isVisible = true
+					checkPasswordErrorCheck.isVisible = false
+					emailErrorCheck.isVisible = false
+					return@setOnClickListener
+
+				}*/
+			}
+
 
 			if(auth.currentUser == null){ // 아직 로그인을 안했다면
 				auth.signInWithEmailAndPassword(email,passwordd).
@@ -38,8 +70,9 @@ class BrooklynEmailSignInActivity : AppCompatActivity() {
 						Toast.makeText(this@BrooklynEmailSignInActivity, "로그인에 성공했습니다", Toast.LENGTH_SHORT)
 							.show()
 						startMainActivity()
+						finish()
 					} else {
-						Toast.makeText(this@BrooklynEmailSignInActivity, "로그인에 실패했습니다", Toast.LENGTH_SHORT)
+						Toast.makeText(this@BrooklynEmailSignInActivity, "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요", Toast.LENGTH_SHORT)
 							.show()
 					}
 				}

@@ -24,6 +24,7 @@ class StartActivity : AppCompatActivity() {
 
 		if(auth.currentUser != null){
 			startActivity(Intent(this, MainActivity::class.java))
+			finish()
 		}
 
 		setStartButtonListener()
@@ -37,6 +38,7 @@ class StartActivity : AppCompatActivity() {
 		binding.startButton.setOnClickListener {
 			val intent = Intent(this, SignUpActivity::class.java)
 			startActivity(intent)
+			finish()
 		}
 	}
 
