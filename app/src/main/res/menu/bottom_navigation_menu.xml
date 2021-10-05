@@ -12,8 +12,19 @@
         android:title="채팅" />
 
     <item
+        android:id="@+id/placeHolder"
+        android:title="" />
+
+
+    <item
+        android:id="@+id/myPlace"
+        android:icon="@drawable/place"
+        android:title="내 근처" />
+
+    <item
         android:id="@+id/myPage"
         android:icon="@drawable/person"
         android:title="내 공장" />
+
 
 </menu>

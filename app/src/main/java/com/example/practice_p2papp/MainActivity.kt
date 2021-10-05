@@ -1,8 +1,10 @@
 package com.example.practice_p2papp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.practice_p2papp.articlelist.AddArticleActivity
 import com.example.practice_p2papp.articlelist.ArticleListFragment
 import com.example.practice_p2papp.chatlist.ChatListFragment
 import com.example.practice_p2papp.databinding.ActivityMainBinding
@@ -25,6 +27,10 @@ class MainActivity : AppCompatActivity() {
 
 		setBottomNavigationView()
 		replaceFragment(articleFragment)
+		startAddArticleActivity()
+
+		binding.bottomNavigationBar.background = null
+		binding.bottomNavigationBar.menu.getItem(2).isEnabled = false
 
 	}
 
@@ -43,5 +49,18 @@ class MainActivity : AppCompatActivity() {
 	private fun replaceFragment(fragment: Fragment) {
 		val transaction = supportFragmentManager.beginTransaction()
 		transaction.replace(binding.fragmentContainer.id, fragment).commit()
+	}
+
+	private fun startAddArticleActivity() {
+		binding.addFloatingButton.setOnClickListener {
+//			if (auth.currentUser?.uid != null) {
+			val intent = Intent(this, AddArticleActivity::class.java)
+			startActivity(intent)
+//			} else {
+//				Snackbar.make(binding.root, "로그인 하셈", Snackbar.LENGTH_LONG).show()
+//				return@setOnClickListener
+//			}
+
+		}
 	}
 }

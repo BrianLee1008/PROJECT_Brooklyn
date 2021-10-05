@@ -30,21 +30,8 @@ class ArticleListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		startAddArticleActivity()
 	}
 
-	private fun startAddArticleActivity() {
-		binding.addFloatingButton.setOnClickListener {
-//			if (auth.currentUser?.uid != null) {
-				val intent = Intent(requireActivity(), AddArticleActivity::class.java)
-				startActivity(intent)
-//			} else {
-//				Snackbar.make(binding.root, "로그인 하셈", Snackbar.LENGTH_LONG).show()
-//				return@setOnClickListener
-//			}
-
-		}
-	}
 
 	override fun onDestroyView() {
 		super.onDestroyView()

@@ -46,17 +46,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view" />
 
-    <!--material은 background값이 먹히지 않고 backgroundTint값이 먹힌다.-->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addFloatingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/mone_green"
-        android:src="@drawable/add"
-        app:backgroundTint="@color/mone_green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
