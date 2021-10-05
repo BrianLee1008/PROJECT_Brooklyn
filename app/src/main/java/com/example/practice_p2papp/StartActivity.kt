@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.practice_p2papp.databinding.ActivityStartBinding
+import com.example.practice_p2papp.signinup.SignUpActivity
 
 class StartActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class StartActivity : AppCompatActivity() {
 
 	private fun setStartButtonListener(){
 		binding.startButton.setOnClickListener {
-			val intent = Intent(this, MainActivity::class.java)
+			val intent = Intent(this, SignUpActivity::class.java)
 			startActivity(intent)
 		}
 	}
