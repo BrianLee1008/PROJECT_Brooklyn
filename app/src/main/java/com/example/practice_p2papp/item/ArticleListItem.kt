@@ -4,6 +4,7 @@ import android.net.Uri
 
 data class ArticleListItem(
 	val userId: String,
+	val nickName : String,
 	val title: String,
 	val content: String,
 	val price: String,
@@ -11,5 +12,5 @@ data class ArticleListItem(
 	val imageUriList: List<Uri>
 ) {
 
-	constructor() : this("", "", "", "",0, listOf())
+	constructor() : this("","", "", "", "",0, listOf())
 }

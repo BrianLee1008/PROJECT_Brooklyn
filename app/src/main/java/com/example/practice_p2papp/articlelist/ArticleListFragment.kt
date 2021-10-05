@@ -1,7 +1,7 @@
 package com.example.practice_p2papp.articlelist
 
 
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_ARTICLES
 import com.example.practice_p2papp.adapter.ArticleListAdapter
 import com.example.practice_p2papp.databinding.FragmentArticleListBinding
+import com.example.practice_p2papp.item.ArticleListItem
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -18,12 +24,31 @@ import com.google.firebase.ktx.Firebase
 
 class ArticleListFragment : Fragment() {
 
-	private val imageUriList = mutableListOf<Uri>()
+	private val auth: FirebaseAuth by lazy {
+		Firebase.auth
+	}
 
 	private lateinit var articleListAdapter: ArticleListAdapter
 
 	private val articleDB: DatabaseReference by lazy {
 		Firebase.database.reference.child(DB_ARTICLES)
+	}
+
+	private val articleList = mutableListOf<ArticleListItem>()
+
+	private val listener = object :ChildEventListener{
+		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+			val model = snapshot.getValue(ArticleListItem::class.java)
+			model ?: return
+
+			articleList.add(model)
+			articleListAdapter.submitList(articleList)
+		}
+		override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+		override fun onChildRemoved(snapshot: DataSnapshot) {}
+		override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+		override fun onCancelled(error: DatabaseError) {}
+
 	}
 
 	private var _binding: FragmentArticleListBinding? = null
@@ -42,7 +67,10 @@ class ArticleListFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		articleList.clear()
+
 		initRecyclerView()
+		articleDB.addChildEventListener(listener)
 
 	}
 
@@ -55,11 +83,20 @@ class ArticleListFragment : Fragment() {
 		}
 	}
 
+
 	// TODO 4. 아이템 클릭하면 DB에서 값 꺼내오는 동시에 아이템 상세페이지로 이동, 값 전달
+
+
+	@SuppressLint("NotifyDataSetChanged")
+	override fun onResume() {
+		super.onResume()
+		articleListAdapter.notifyDataSetChanged()
+	}
 
 
 	override fun onDestroyView() {
 		super.onDestroyView()
+		articleDB.removeEventListener(listener)
 		_binding = null
 	}
 }

@@ -16,7 +16,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 // 세부정보 기입 후 관리
-// TODO 2. UserDB 만든다음 nickName DB에 저장. 꺼내올 때 해당 UserId와 똑같은 것에서 꺼내오게 auth.currentUserId 도 같이 저장
 class SignInActivity : AppCompatActivity() {
 
 	private val auth: FirebaseAuth by lazy {
@@ -60,10 +59,9 @@ class SignInActivity : AppCompatActivity() {
 
 				}
 
-				val userId = auth.currentUser!!.uid
 				val nickName = nickNameEditText.text.toString()
 
-				uploadUserInfo(userId, nickName)
+				uploadUserInfo(nickName)
 				nickNameEmptyCheck.isVisible = false
 			}
 
@@ -71,8 +69,8 @@ class SignInActivity : AppCompatActivity() {
 
 	}
 
-	private fun uploadUserInfo(userId : String, nickName : String){
-		val model = UserItem(userId, nickName)
+	private fun uploadUserInfo(nickName : String){
+		val model = UserItem(nickName)
 
 		userDB.child(DB_USER_INFO).push().setValue(model)
 		startMainActivity()

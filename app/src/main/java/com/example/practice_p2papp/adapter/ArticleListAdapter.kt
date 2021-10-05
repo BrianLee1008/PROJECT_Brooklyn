@@ -17,7 +17,10 @@ class ArticleListAdapter(val onClickListener: (ArticleListItem) -> Unit) : ListA
 		fun bindView(articleListItem: ArticleListItem) = with(binding) {
 			titleTextView.text = articleListItem.title
 			priceTextView.text = articleListItem.price
-			thumbnailImageView.loadThumbnailImage(articleListItem.imageUriList,8f)
+			if(articleListItem.imageUriList.isNotEmpty()){
+				thumbnailImageView.loadThumbnailImage(articleListItem.imageUriList,8f)
+			}
+
 
 			this.root.setOnClickListener {
 				onClickListener(articleListItem)
