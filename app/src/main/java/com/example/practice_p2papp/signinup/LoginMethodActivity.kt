@@ -20,6 +20,7 @@ class LoginMethodActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		setBasicSignInButtonListener()
+
 	}
 
 	private fun setBasicSignInButtonListener(){

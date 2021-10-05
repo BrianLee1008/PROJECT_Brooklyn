@@ -12,7 +12,6 @@ import com.example.practice_p2papp.mypage.MyPageFragment
 
 class MainActivity : AppCompatActivity() {
 
-	/* TODO item xml 비롯해 xml 전체적으로 수정*/
 
 	private val articleFragment = ArticleListFragment()
 	private val chatRoomListFragment = ChatListFragment()

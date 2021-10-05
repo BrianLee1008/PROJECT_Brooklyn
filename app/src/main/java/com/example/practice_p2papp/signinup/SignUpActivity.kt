@@ -81,7 +81,6 @@ class SignUpActivity : AppCompatActivity() {
 						passwordEmptyCheck.isVisible = false
 						checkPasswordErrorCheck.isVisible = false
 
-						// TODO 나머지 정보 적는 페이지로 이동
 						startSignInActivity()
 
 						emailEditText.text.clear()

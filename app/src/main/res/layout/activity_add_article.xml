@@ -69,7 +69,7 @@
             android:fontFamily="@font/wemakeprice_semibold"
             android:text="제목 : "
             android:textColor="@color/mone_long_green"
-            android:textSize="18sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/constraintContainer" />
 
@@ -81,7 +81,7 @@
             android:fontFamily="@font/wemakeprice_semibold"
             android:text="가격 : "
             android:textColor="@color/mone_long_green"
-            android:textSize="18sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
@@ -164,29 +164,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageViewLayout" />
 
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/explainEditTextLayout"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewLayoutUnderLineView"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageViewLayoutUnderLineView">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/explainEditTextLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/wemakeprice_regular"
-                android:gravity="start"
-                android:hint="내 자동차와 관련된 게시글 내용을 작성해 주세요. (허위매물 적발시 사전경고 없이 게시물 삭제)" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:fontFamily="@font/wemakeprice_regular"
+                    android:gravity="start"
+                    android:hint="내 자동차와 관련된 게시글 내용을 작성해 주세요. (허위매물 적발시 사전경고 없이 게시물 삭제)" />
 
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
 
 
