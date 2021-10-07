@@ -60,8 +60,9 @@ class SignInActivity : AppCompatActivity() {
 				}
 
 				val nickName = nickNameEditText.text.toString()
+				val userId = auth.currentUser!!.uid
 
-				uploadUserInfo(nickName)
+				uploadUserInfo(userId,nickName)
 				nickNameEmptyCheck.isVisible = false
 			}
 
@@ -69,8 +70,8 @@ class SignInActivity : AppCompatActivity() {
 
 	}
 
-	private fun uploadUserInfo(nickName : String){
-		val model = UserItem(nickName)
+	private fun uploadUserInfo(nickName : String, userId : String){
+		val model = UserItem(userId = userId,nickName = nickName)
 
 		userDB.child(DB_USER_INFO).push().setValue(model)
 		startMainActivity()
