@@ -10,10 +10,7 @@ import com.example.practice_p2papp.item.ArticleListItem
 import com.example.practice_p2papp.item.UserItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -32,20 +29,7 @@ class AddArticleActivity : AppCompatActivity() {
 		Firebase.database.reference.child(DB_USER_INFO)
 	}
 
-	// userDB에서 nickName 가져온다.
-	private val userDBListener = object : ValueEventListener {
-		override fun onDataChange(snapshot: DataSnapshot) {
-			snapshot.children.forEach {
-				val model = it.getValue(UserItem::class.java)
-				model ?: return@forEach
-
-				userNickName.add(model)
-			}
-		}
-
-		override fun onCancelled(error: DatabaseError) {}
-	}
-	private val userNickName = mutableListOf<UserItem>()
+	private var userNickName : String = ""
 
 
 	private lateinit var binding: ActivityAddArticleBinding
@@ -53,6 +37,21 @@ class AddArticleActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		binding = ActivityAddArticleBinding.inflate(layoutInflater)
 		setContentView(binding.root)
+
+		// userDB에서 nickName 가져온다.
+		userDB.addChildEventListener(object : ChildEventListener{
+			override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+				val model = snapshot.getValue(UserItem::class.java)
+				model ?: return
+
+				userNickName = model.nickName
+			}
+			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+			override fun onChildRemoved(snapshot: DataSnapshot) {}
+			override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+			override fun onCancelled(error: DatabaseError) {}
+
+		})
 
 		setImageAddButtonListener()
 		setSubmitButtonListener()
@@ -73,7 +72,7 @@ class AddArticleActivity : AppCompatActivity() {
 			}
 
 			val userId = auth.currentUser?.uid.toString()
-			val nickName = userDB.addListenerForSingleValueEvent(userDBListener).toString()
+			val nickName = userNickName
 			val title = titleEditText.text.toString()
 			val content = contentEditText.text.toString()
 			val price = priceEditText.text.toString()
@@ -81,9 +80,9 @@ class AddArticleActivity : AppCompatActivity() {
 
 			// imageUrlList가 있을 떄와 없을떄로 나누어짐
 			if (imageUriList.isNotEmpty()) {
-				uploadArticles(userId, nickName, title, content, price, date, listOf())
+				uploadArticles(userId, nickName, title, content, "$price 원", date, listOf())
 			} else {
-				uploadArticles(userId, nickName, title, content, price, date, listOf())
+				uploadArticles(userId, nickName, title, content, "$price 원", date, listOf())
 
 			}
 

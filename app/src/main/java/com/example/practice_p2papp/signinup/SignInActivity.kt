@@ -70,7 +70,7 @@ class SignInActivity : AppCompatActivity() {
 
 	}
 
-	private fun uploadUserInfo(nickName : String, userId : String){
+	private fun uploadUserInfo(userId : String, nickName : String){
 		val model = UserItem(userId = userId,nickName = nickName)
 
 		userDB.child(DB_USER_INFO).push().setValue(model)
