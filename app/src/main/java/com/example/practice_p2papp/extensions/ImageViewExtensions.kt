@@ -18,7 +18,7 @@ private val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(tru
 internal fun ImageView.clear() = Glide.with(context).clear(this)
 
 @SuppressLint("CheckResult")
-internal fun ImageView.loadThumbnailImage(url: List<Uri>, corner: Float = 0f) {
+internal fun ImageView.loadThumbnailImage(url: List<String>, corner: Float = 0f) {
 	Glide.with(this)
 		.load(url.first())
 		.transition(DrawableTransitionOptions.withCrossFade(factory))

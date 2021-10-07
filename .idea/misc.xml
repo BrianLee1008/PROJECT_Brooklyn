@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/add_image.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/bg_round_corner_8_black.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/chat.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/ic_close.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/no_stroke_box.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/person.xml" value="0.3764102564102564" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/drawable/selector_menu_color.xml" value="0.3764102564102564" />
@@ -25,6 +27,7 @@
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_article.xml" value="0.33" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat_list.xml" value="0.33" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_photo.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36614583333333334" />
       </map>
     </option>

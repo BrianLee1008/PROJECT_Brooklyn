@@ -9,7 +9,7 @@ data class ArticleListItem(
 	val content: String,
 	val price: String,
 	val date: Long,
-	val imageUriList: List<Uri>
+	val imageUriList: List<String>
 ) {
 
 	constructor() : this("","", "", "", "",0, listOf())
