@@ -1,7 +1,6 @@
 package com.example.practice_p2papp.extensions
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -15,10 +14,12 @@ import com.example.practice_p2papp.R
 
 private val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
 
-internal fun ImageView.clear() = Glide.with(context).clear(this)
+
+
+fun ImageView.clear() = Glide.with(context).clear(this)
 
 @SuppressLint("CheckResult")
-internal fun ImageView.loadThumbnailImage(url: List<String>, corner: Float = 0f) {
+fun ImageView.loadThumbnailImage(url: List<String>, corner: Float = 0f) {
 	Glide.with(this)
 		.load(url.first())
 		.transition(DrawableTransitionOptions.withCrossFade(factory))
@@ -29,7 +30,8 @@ internal fun ImageView.loadThumbnailImage(url: List<String>, corner: Float = 0f)
 		.into(this)
 }
 
-internal fun ImageView.loadCenterCrop(url: String, corner: Float = 0f) {
+@SuppressLint("CheckResult")
+fun ImageView.loadCenterCrop(url: String, corner: Float = 0f) {
 	Glide.with(this)
 		.load(url)
 		.transition(DrawableTransitionOptions.withCrossFade(factory))
@@ -37,5 +39,12 @@ internal fun ImageView.loadCenterCrop(url: String, corner: Float = 0f) {
 			if (corner > 0) transform(CenterCrop(), RoundedCorners(corner.fromDpToPx()))
 		}
 		.error(R.drawable.error)
+		.into(this)
+}
+
+fun ImageView.circleCropImage(url: String) {
+ 	Glide.with(this)
+		.load(url)
+		.circleCrop()
 		.into(this)
 }

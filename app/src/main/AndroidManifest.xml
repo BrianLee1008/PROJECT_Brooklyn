@@ -33,6 +33,7 @@
         <activity android:name=".signinup.LoginMethodActivity" />
         <activity
             android:name=".signinup.BrooklynEmailSignInActivity"/>
+        <activity android:name=".mypage.editprofile.DetailProfileActivity"/>
     </application>
 
 </manifest>
