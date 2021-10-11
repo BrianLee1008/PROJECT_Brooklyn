@@ -79,7 +79,10 @@ class ArticleListFragment : Fragment() {
 		articleListAdapter = ArticleListAdapter(onClickListener = {})
 		articleRecyclerView.run {
 			adapter = articleListAdapter
-			layoutManager = LinearLayoutManager(requireContext())
+			// 리사이클러뷰 최신순 정렬
+			layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, true).apply {
+				stackFromEnd = true
+			}
 		}
 	}
 

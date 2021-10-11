@@ -13,7 +13,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.practice_p2papp.FirebaseKey
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
-import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_PROFILE
 import com.example.practice_p2papp.StartActivity
 import com.example.practice_p2papp.abstracts.PermissionActivity
 import com.example.practice_p2papp.databinding.ActivityDetailProfileBinding
@@ -97,6 +96,7 @@ class DetailProfileActivity : PermissionActivity() {
 	private fun setProfileImage() = with(binding) {
 		profileImageView.setOnClickListener {
 			showChooseCameraOrGalleryPopup()
+			submitButton.isVisible = true
 		}
 	}
 
@@ -251,12 +251,16 @@ class DetailProfileActivity : PermissionActivity() {
 
 	}
 
+
+
 	private fun initNickNameTest() = with(binding) {
 		nickNameContainer.setOnClickListener {
 			nickNameTextView.isVisible = false
+			nickNameEditText.setText(nickNameTextView.text)
 			nickNameEditText.isVisible = true
 			submitButton.isVisible = true
 		}
+
 	}
 
 	private fun editNickNameTest() = with(binding) {
