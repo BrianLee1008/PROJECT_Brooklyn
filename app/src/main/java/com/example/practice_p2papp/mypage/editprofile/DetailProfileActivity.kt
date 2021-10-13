@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.practice_p2papp.FirebaseKey
@@ -16,7 +17,6 @@ import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
 import com.example.practice_p2papp.StartActivity
 import com.example.practice_p2papp.abstracts.PermissionActivity
 import com.example.practice_p2papp.databinding.ActivityDetailProfileBinding
-import com.example.practice_p2papp.extensions.authCheck
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.UserItem
 import com.google.firebase.auth.FirebaseAuth
@@ -33,8 +33,8 @@ import java.text.SimpleDateFormat
 // 프로필 수정 및 로그아웃 Activity
 class DetailProfileActivity : PermissionActivity() {
 
-	private var editImageUrl : String? = null
-	private var loadListenerImage : String? = null
+	private var editImageUrl: String? = null
+	private var loadListenerImage: String? = null
 
 	private var captureImageUri: Uri? = null
 
@@ -47,14 +47,20 @@ class DetailProfileActivity : PermissionActivity() {
 	private val storage: FirebaseStorage by lazy {
 		Firebase.storage
 	}
+
+	// 특정 child 값 받아오는 로직 필요
 	private val loadListener = object : ChildEventListener {
 		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 			val model = snapshot.getValue(UserItem::class.java)
 			model ?: return
 
-			binding.nickNameTextView.text = model.nickName
-			binding.profileImageView.circleCropImage(model.imageUrl!!)
-			loadListenerImage = model.imageUrl
+			// UID 검증해서 특정 Child값 받아옴
+			if (auth.currentUser!!.uid == model.userId) {
+				binding.nickNameTextView.text = model.nickName
+				binding.profileImageView.circleCropImage(model.imageUrl!!)
+				loadListenerImage = model.imageUrl
+			}
+
 		}
 
 		override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -84,11 +90,16 @@ class DetailProfileActivity : PermissionActivity() {
 
 	private fun setSignOutButtonListener() = with(binding) {
 		signOutButton.setOnClickListener {
-			auth.authCheck()
+			if (auth.currentUser == null) {
+				Toast.makeText(this@DetailProfileActivity, "로그인을 다시 해주세요.", Toast.LENGTH_SHORT)
+					.show()
+				return@setOnClickListener
+			}
 			auth.signOut()
 			Toast.makeText(this@DetailProfileActivity, "로그아웃 했습니다", Toast.LENGTH_SHORT).show()
 			startActivity(Intent(this@DetailProfileActivity, StartActivity::class.java))
-			finish()
+			// xo 모든 Acivity 경로 지우기
+			ActivityCompat.finishAffinity(this@DetailProfileActivity)
 		}
 	}
 
@@ -154,15 +165,6 @@ class DetailProfileActivity : PermissionActivity() {
 		return@withContext deferred.await()
 	}
 
-	// 이미지 DB 업로드
-	private suspend fun imageDBUpload(userId: String, nickName: String, imageUrl: String) =
-		withContext(Dispatchers.IO) {
-			lifecycleScope.launch {
-				val model = UserItem(userId, nickName, imageUrl)
-				userDB.push().setValue(model)
-			}
-		}
-
 	// 이미지 뷰에 뿌리고 Storage, DB에 저장
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
@@ -215,13 +217,9 @@ class DetailProfileActivity : PermissionActivity() {
 	}
 
 
-	/* xo 2.DB 수정
-	*   이 예시에서는 push()를 사용하여 모든 사용자의 게시글을 포함하는 노드(/UserInfo/$userId)에서 게시글을 작성하는 동시에 getKey()로 키를 검색합니다.
-	*   그런 다음 이 키를 사용하여 /user-posts/$userid/$postid에서 사용자의 게시물에 두 번째 항목을 작성합니다.
-	*   이 경로를 사용하면 이 예시에서 두 위치에 새 게시물을 생성한 것처럼 updateChildren()를 한 번만 호출하여 JSON 트리의 여러 위치에서 동시에 업데이트를 수행할 수 있습니다.
-	*   이러한 동시 업데이트는 원자적인 성격을 갖습니다. 즉, 모든 업데이트가 한꺼번에 성공하거나 실패합니다.*/
+	// 데이터 교체
 	private fun editProfileAndUpdateDB(userId: String, nickName: String, imageUrl: String?) {
-		val key = userDB.push().key
+		val key = userDB.child(userId).key
 		if (key == null) {
 			Toast.makeText(this, "수정에 실패 했습니다.", Toast.LENGTH_SHORT).show()
 			return
@@ -231,15 +229,9 @@ class DetailProfileActivity : PermissionActivity() {
 		val profileValue = profile.toMap()
 
 		val childUpdates = hashMapOf<String, Any>(
-			"/$DB_USER_INFO/$key" to profileValue,
-			 // "/$DB_USER_PROFILE/$userId/$key" to profileValue -> 동시 다른 하위목록 업데이트 가능
+			"/$DB_USER_INFO/$userId" to profileValue,
+			// "/$DB_USER_PROFILE/$userId/$key" to profileValue -> 동시 다른 하위목록 업데이트 가능
 		)
-
-
-		/*xo 3. DB 업데이트 완료 콜백
-		*  데이터가 커밋되는 시점을 파악하려면 완료 리스너를 추가합니다. setValue() 및 updateChildren()은 모두 쓰기가 데이터베이스에 커밋될 때 호출되는 선택적 완료 리스너를 사용합니다.
-		*  호출이 실패하면 실패 이유를 나타내는 오류 객체가 리스너로 전달됩니다.*/
-		// 프로필 닉네임 수정
 		Firebase.database.reference.updateChildren(childUpdates)
 			.addOnSuccessListener {
 				Toast.makeText(this, "프로필이 변경되었어요.", Toast.LENGTH_SHORT).show()
@@ -250,7 +242,6 @@ class DetailProfileActivity : PermissionActivity() {
 			}
 
 	}
-
 
 
 	private fun initNickNameTest() = with(binding) {
@@ -265,14 +256,20 @@ class DetailProfileActivity : PermissionActivity() {
 
 	private fun editNickNameTest() = with(binding) {
 		submitButton.setOnClickListener {
-			auth.authCheck()
-			if (nickNameEditText.text.isEmpty()){
-				Toast.makeText(this@DetailProfileActivity, "닉네임은 2글자 이상으로 작성해주셔야 해요.", Toast.LENGTH_SHORT).show()
+			if (auth.currentUser == null) {
+				return@setOnClickListener
+			}
+			if (nickNameEditText.text.isEmpty()) {
+				Toast.makeText(
+					this@DetailProfileActivity,
+					"닉네임은 2글자 이상으로 작성해주셔야 해요.",
+					Toast.LENGTH_SHORT
+				).show()
 				return@setOnClickListener
 			}
 
 			// 이미지 변경이 있으면 변경된 이미지 저장. 없으면 원래 불러왔던 이미지 저장
-			if(editImageUrl != null){
+			if (editImageUrl != null) {
 				editProfileAndUpdateDB(
 					userId = auth.currentUser!!.uid,
 					nickName = nickNameEditText.text.toString(),
@@ -290,6 +287,7 @@ class DetailProfileActivity : PermissionActivity() {
 			nickNameTextView.isVisible = true
 			nickNameEditText.isVisible = false
 			submitButton.isVisible = false
+			nickNameTextView.text = nickNameEditText.text.toString()
 		}
 
 	}

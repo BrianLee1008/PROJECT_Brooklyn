@@ -1,4 +1,4 @@
-package com.example.practice_p2papp.photo
+package com.example.practice_p2papp.adapter
 
 import android.annotation.SuppressLint
 import android.net.Uri

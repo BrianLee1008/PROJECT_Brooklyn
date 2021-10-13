@@ -48,3 +48,10 @@ fun ImageView.circleCropImage(url: String) {
 		.circleCrop()
 		.into(this)
 }
+
+fun ImageView.loadImage(url: String) {
+	Glide.with(this)
+		.load(url)
+		.error(R.drawable.error)
+		.into(this)
+}

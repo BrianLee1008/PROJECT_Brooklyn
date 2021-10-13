@@ -2,10 +2,12 @@ package com.example.practice_p2papp.articlelist
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_ARTICLES
@@ -22,6 +24,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
+
 class ArticleListFragment : Fragment() {
 
 	private val auth: FirebaseAuth by lazy {
@@ -36,7 +39,7 @@ class ArticleListFragment : Fragment() {
 
 	private val articleList = mutableListOf<ArticleListItem>()
 
-	private val listener = object :ChildEventListener{
+	private val listener = object : ChildEventListener {
 		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 			val model = snapshot.getValue(ArticleListItem::class.java)
 			model ?: return
@@ -44,6 +47,7 @@ class ArticleListFragment : Fragment() {
 			articleList.add(model)
 			articleListAdapter.submitList(articleList)
 		}
+
 		override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
 		override fun onChildRemoved(snapshot: DataSnapshot) {}
 		override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -76,18 +80,45 @@ class ArticleListFragment : Fragment() {
 
 
 	private fun initRecyclerView() = with(binding) {
-		articleListAdapter = ArticleListAdapter(onClickListener = {})
+		articleListAdapter = ArticleListAdapter(
+
+			// 아이템 클릭하면 아이템 홀딩된 데이터 정렬해서 전달
+			onClickListener = { articleListItem ->
+				if (auth.currentUser == null) {
+					return@ArticleListAdapter
+				}
+
+				if (auth.currentUser!!.uid != articleListItem.userId) { // 현재 아이디와 아이템에 등록된 아이디 다를 경우
+					val articleInfo = ArticleListItem(
+						userId = articleListItem.userId,
+						nickName = articleListItem.nickName,
+						title = articleListItem.title,
+						content = articleListItem.content,
+						price = articleListItem.price,
+						date = articleListItem.date,
+						imageUriList = articleListItem.imageUriList,
+						userProfileImage = articleListItem.userProfileImage
+					)
+					val intent = Intent(activity, DetailArticleActivity::class.java)
+					intent.putExtra("path", articleInfo)
+					startActivity(intent)
+
+
+				} else { // 같을 경우
+					Toast.makeText(requireContext(), "내가 쓴 글", Toast.LENGTH_SHORT).show()
+					return@ArticleListAdapter
+				}
+			}
+		)
 		articleRecyclerView.run {
 			adapter = articleListAdapter
 			// 리사이클러뷰 최신순 정렬
-			layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, true).apply {
-				stackFromEnd = true
-			}
+			layoutManager =
+				LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true).apply {
+					stackFromEnd = true
+				}
 		}
 	}
-
-
-	// TODO 4. 아이템 클릭하면 DB에서 값 꺼내오는 동시에 아이템 상세페이지로 이동, 값 전달
 
 
 	@SuppressLint("NotifyDataSetChanged")

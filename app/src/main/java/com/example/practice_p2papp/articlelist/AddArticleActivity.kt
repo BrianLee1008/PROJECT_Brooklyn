@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,7 +18,7 @@ import com.example.practice_p2papp.abstracts.PermissionActivity
 import com.example.practice_p2papp.databinding.ActivityAddArticleBinding
 import com.example.practice_p2papp.item.ArticleListItem
 import com.example.practice_p2papp.item.UserItem
-import com.example.practice_p2papp.photo.PhotoAdapter
+import com.example.practice_p2papp.adapter.PhotoAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -48,13 +47,14 @@ class AddArticleActivity : PermissionActivity() {
 		Firebase.database.reference.child(DB_USER_INFO)
 	}
 
-	private val storage : FirebaseStorage by lazy {
+	private val storage: FirebaseStorage by lazy {
 		Firebase.storage
 	}
 
-	private var userNickName: String = ""
+	private var userNickName: String? = null
+	private var userProfileImage : String? = null
 
-	private lateinit var photoAdapter : PhotoAdapter
+	private lateinit var photoAdapter: PhotoAdapter
 
 
 	private lateinit var binding: ActivityAddArticleBinding
@@ -70,6 +70,7 @@ class AddArticleActivity : PermissionActivity() {
 				val model = snapshot.getValue(UserItem::class.java)
 				model ?: return
 
+				userProfileImage = model.imageUrl
 				userNickName = model.nickName
 			}
 
@@ -87,7 +88,7 @@ class AddArticleActivity : PermissionActivity() {
 	}
 
 	//리사이클러뷰 셋업
-	private fun initRecyclerView() = with(binding){
+	private fun initRecyclerView() = with(binding) {
 		photoAdapter = PhotoAdapter(removePhotoListener = { uri ->
 			removePhoto(uri)
 		})
@@ -106,11 +107,12 @@ class AddArticleActivity : PermissionActivity() {
 			}
 
 			val userId = auth.currentUser?.uid.toString()
-			val nickName = userNickName
+			val nickName = userNickName!!
 			val title = titleEditText.text.toString()
 			val content = contentEditText.text.toString()
 			val price = priceEditText.text.toString()
 			val date = System.currentTimeMillis()
+			val userProfileImage = userProfileImage!!
 
 			showProgress()
 
@@ -118,11 +120,29 @@ class AddArticleActivity : PermissionActivity() {
 			if (imageUriList.isNotEmpty()) {
 				lifecycleScope.launch {
 					val results = uploadPhoto(imageUriList)
-					uploadArticles(userId, nickName, title, content, "$price 원", date, results.filterIsInstance<String>())
+					uploadArticles(
+						userId,
+						nickName,
+						title,
+						content,
+						"$price 원",
+						date,
+						results.filterIsInstance<String>(),
+						userProfileImage = userProfileImage
+					)
 				}
 
 			} else {
-				uploadArticles(userId, nickName, title, content, "$price 원", date, listOf())
+				uploadArticles(
+					userId,
+					nickName,
+					title,
+					content,
+					"$price 원",
+					date,
+					listOf(),
+					userProfileImage = userProfileImage
+				)
 
 			}
 
@@ -131,11 +151,12 @@ class AddArticleActivity : PermissionActivity() {
 	}
 
 	// Storage 저장
-	private suspend fun uploadPhoto(uriList : List<Uri>) = withContext(Dispatchers.IO) {
-		val deferred : List<Deferred<Any>> = uriList.mapIndexed { index, uri ->
+	private suspend fun uploadPhoto(uriList: List<Uri>) = withContext(Dispatchers.IO) {
+		val deferred: List<Deferred<Any>> = uriList.mapIndexed { index, uri ->
 			lifecycleScope.async {
 				val fileName = "image_${index}.png"
-				val storagePutFile =  storage.reference.child(ARTICLE_STORAGE).child(fileName).putFile(uri).await()
+				val storagePutFile =
+					storage.reference.child(ARTICLE_STORAGE).child(fileName).putFile(uri).await()
 				return@async storagePutFile.storage.downloadUrl.await().toString()
 			}
 		}
@@ -150,18 +171,28 @@ class AddArticleActivity : PermissionActivity() {
 		content: String,
 		price: String,
 		date: Long,
-		imageUriList: List<String>
+		imageUriList: List<String>,
+		userProfileImage: String
 	) {
-		val model = ArticleListItem(userId, nickName, title, content, price, date, imageUriList)
+		val model = ArticleListItem(
+			userId,
+			nickName,
+			title,
+			content,
+			price,
+			date,
+			imageUriList,
+			userProfileImage
+		)
 
-		articleDB.child(DB_ARTICLES).push().setValue(model)
+		articleDB.child(DB_ARTICLES).child("$userId$title").setValue(model)
 
 		hideProgress()
 		finish()
 
 	}
 
-	private fun removePhoto(uri :Uri){
+	private fun removePhoto(uri: Uri) {
 		imageUriList.remove(uri)
 		photoAdapter.setPhotoList(imageUriList)
 	}
@@ -202,7 +233,7 @@ class AddArticleActivity : PermissionActivity() {
 			captureImageUri = uri
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, captureImageUri)
 			startActivityForResult(intent, CAMERA_RESULT_CODE)
-			Log.d("testtest","$CAMERA_RESULT_CODE 3")
+			Log.d("testtest", "$CAMERA_RESULT_CODE 3")
 		}
 
 
@@ -300,11 +331,10 @@ class AddArticleActivity : PermissionActivity() {
 			}
 			CAMERA_REQUEST_CODE -> {
 				openCamera()
-				Log.d("testtest","$CAMERA_RESULT_CODE 4")
+				Log.d("testtest", "$CAMERA_RESULT_CODE 4")
 			}
 		}
 	}
-
 
 
 	// 권한 승인 받지 못했을 때 이벤트

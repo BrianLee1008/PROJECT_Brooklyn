@@ -33,6 +33,7 @@ class BrooklynEmailSignInActivity : AppCompatActivity() {
 
 	private fun loadSignReferenceToAuth() = with(binding){
 		signInButton.setOnClickListener {
+
 			val email = emailEditText.text.toString()
 			val passwordd = passwordEditText.text.toString()
 
@@ -61,10 +62,8 @@ class BrooklynEmailSignInActivity : AppCompatActivity() {
 				}*/
 			}
 
-
-			if(auth.currentUser == null){ // 아직 로그인을 안했다면
 				auth.signInWithEmailAndPassword(email,passwordd).
-				addOnCompleteListener { task ->
+				addOnCompleteListener(this@BrooklynEmailSignInActivity) { task ->
 					if(task.isSuccessful){
 						successSignIn()
 						Toast.makeText(this@BrooklynEmailSignInActivity, "로그인에 성공했습니다", Toast.LENGTH_SHORT)
@@ -76,14 +75,7 @@ class BrooklynEmailSignInActivity : AppCompatActivity() {
 							.show()
 					}
 				}
-			} else { // 이미 로그인을 했다면
-				Toast.makeText(this@BrooklynEmailSignInActivity, "로그인 이미 했다규", Toast.LENGTH_SHORT)
-					.show()
-				return@setOnClickListener
 			}
-
-		}
-
 	}
 
 	private fun successSignIn() = with(binding){

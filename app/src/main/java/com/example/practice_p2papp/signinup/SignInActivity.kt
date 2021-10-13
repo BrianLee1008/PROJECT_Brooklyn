@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.practice_p2papp.FirebaseKey
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
+import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_PROFILE
 import com.example.practice_p2papp.MainActivity
 import com.example.practice_p2papp.abstracts.PermissionActivity
 import com.example.practice_p2papp.databinding.ActivitySignInBinding
@@ -123,7 +124,7 @@ class SignInActivity : PermissionActivity() {
 		withContext(Dispatchers.IO) {
 			lifecycleScope.launch {
 				val model = UserItem(userId = userId, nickName = nickName, imageUrl = imageUrl)
-				userDB.child(DB_USER_INFO).push().setValue(model)
+				userDB.child(DB_USER_INFO).child(userId).setValue(model)
 			}
 			startMainActivity()
 		}

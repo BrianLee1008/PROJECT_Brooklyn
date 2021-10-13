@@ -12,7 +12,8 @@ import com.example.practice_p2papp.item.ArticleListItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ArticleListAdapter(val onClickListener: (ArticleListItem) -> Unit) : ListAdapter<ArticleListItem, ArticleListAdapter.ArticleViewHolder>(diffUtil) {
+class ArticleListAdapter(val onClickListener: (ArticleListItem) -> Unit) :
+	ListAdapter<ArticleListItem, ArticleListAdapter.ArticleViewHolder>(diffUtil) {
 
 	inner class ArticleViewHolder(private val binding: ItemArticleBinding) :
 		RecyclerView.ViewHolder(binding.root) {
@@ -26,8 +27,8 @@ class ArticleListAdapter(val onClickListener: (ArticleListItem) -> Unit) : ListA
 			val date = Date(articleListItem.date)
 			dateTextView.text = format.format(date).toString()
 
-			if(articleListItem.imageUriList.isNotEmpty()){
-				thumbnailImageView.loadThumbnailImage(articleListItem.imageUriList,8f)
+			if (articleListItem.imageUriList.isNotEmpty()) {
+				thumbnailImageView.loadThumbnailImage(articleListItem.imageUriList, 8f)
 			}
 
 
