@@ -33,6 +33,7 @@
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/fragment_home.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/fragment_mypage.xml" value="0.33" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_article.xml" value="0.33" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_buyer_message_box.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat_list.xml" value="0.33" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_chat_room.xml" value="0.36614583333333334" />
@@ -40,6 +41,7 @@
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_detail_article_image_viewpager.xml" value="0.2046875" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_message_box.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_photo.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/layout/item_seller_message_box.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LG/AndroidStudioProjects/PRACTICE_P2PApp/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36614583333333334" />
       </map>
     </option>

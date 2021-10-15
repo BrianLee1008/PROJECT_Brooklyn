@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 class ChatRoomActivity : AppCompatActivity() {
 
@@ -28,6 +29,7 @@ class ChatRoomActivity : AppCompatActivity() {
 	private val chatList = mutableListOf<ChatRoomItem>()
 
 	private lateinit var chatRoomAdapter : ChatRoomAdapter
+	private var key : String? = null
 
 
 	private lateinit var binding: ActivityChatroomBinding
@@ -37,10 +39,12 @@ class ChatRoomActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		chatList.clear()
+		key = intent.getStringExtra("key")
+
 
 		initRecyclerView()
 		// 저장되어있는 메세지 불러오기.
-		chatDetailDB.addChildEventListener(object : ChildEventListener{
+		chatDetailDB.child(key!!).addChildEventListener(object : ChildEventListener{
 			override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 				val chat = snapshot.getValue(ChatRoomItem::class.java)
 				chat ?: return
@@ -89,11 +93,12 @@ class ChatRoomActivity : AppCompatActivity() {
 				sellerId = sellerId,
 				buyerNickName = buyerNickName,
 				sellerNickName = sellerNickName,
-				message = messageEditText.text.toString()
+				message = messageEditText.text.toString(),
+				key = System.currentTimeMillis()
 			)
 
 			// 어차피 채팅 자체가 하나씩 스택 쌓이는 구조이니 push()로 해준다.
-			chatDetailDB.push().setValue(message)
+			chatDetailDB.child(key!!).push().setValue(message)
 			binding.messageEditText.text.clear()
 		}
 	}

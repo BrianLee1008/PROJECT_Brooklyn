@@ -70,8 +70,11 @@ class AddArticleActivity : PermissionActivity() {
 				val model = snapshot.getValue(UserItem::class.java)
 				model ?: return
 
-				userProfileImage = model.imageUrl
-				userNickName = model.nickName
+				if(auth.currentUser!!.uid == model.userId){
+					userProfileImage = model.imageUrl
+					userNickName = model.nickName
+				}
+
 			}
 
 			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -185,7 +188,7 @@ class AddArticleActivity : PermissionActivity() {
 			userProfileImage
 		)
 
-		articleDB.child(DB_ARTICLES).child("$userId$title").setValue(model)
+		articleDB.child(DB_ARTICLES).child("$date").setValue(model)
 
 		hideProgress()
 		finish()

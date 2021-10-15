@@ -6,9 +6,10 @@ data class ChatRoomItem(
 	val sellerId : String,
 	val buyerNickName : String,
 	val sellerNickName : String,
-	val message : String
+	val message : String,
+	val key : Long
 
 ) : Serializable {
 
-	constructor() : this("","","","")
+	constructor() : this("","","","",0)
 }

@@ -2,13 +2,18 @@ package com.example.practice_p2papp.articlelist
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.practice_p2papp.FirebaseKey
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_BUYER_CHAT
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_CHAT
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_SELLER_CHAT
+import com.example.practice_p2papp.R
 import com.example.practice_p2papp.adapter.DetailArticleViewPagerAdapter
+import com.example.practice_p2papp.chatlist.ChatListFragment
 import com.example.practice_p2papp.databinding.ActivityDetailArticleBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.ArticleListItem
@@ -31,6 +36,8 @@ import java.util.*
 
 class DetailArticleActivity : AppCompatActivity() {
 
+	private val chatListFragment = ChatListFragment()
+
 	private val auth: FirebaseAuth by lazy {
 		Firebase.auth
 	}
@@ -38,25 +45,9 @@ class DetailArticleActivity : AppCompatActivity() {
 	private val chatDB: DatabaseReference by lazy {
 		Firebase.database.reference.child(DB_CHAT)
 	}
-	private val userDB: DatabaseReference by lazy {
-		Firebase.database.reference.child(FirebaseKey.DB_USER_INFO)
-	}
+
 	private var myNickName: String = ""
 
-	// buyerNickName 변경하려고 가져온건데 잘 안됨
-	val loadMyNickName = object : ChildEventListener {
-		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-			val model = snapshot.getValue(UserItem::class.java)
-			model ?: return
-
-			myNickName = model.nickName!!
-		}
-
-		override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-		override fun onChildRemoved(snapshot: DataSnapshot) {}
-		override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-		override fun onCancelled(error: DatabaseError) {}
-	}
 
 	private lateinit var viewPagerAdapter: DetailArticleViewPagerAdapter
 
@@ -150,16 +141,21 @@ class DetailArticleActivity : AppCompatActivity() {
 				sellerId ,buyerNickName, sellerNickName, buyerProfileImage, currentTime, articleTitle
 			)
 
-			// DB 저장 계층 - 파는사람 하위로 사려는 사람과 그 사려는 사람의 품목 나누어서 중복 방지. 사는사람도 마찬가지. 만약에 파는사람 - 품목 이런식으로 나누면 나중에 중복 떠서 DB 겹침
-			chatDB.child(DB_SELLER_CHAT).child(sellerNickName).child(buyerNickName)
-				.child(articleTitle).setValue(chatRoomList)
-			chatDB.child(DB_BUYER_CHAT).child(buyerNickName)
-				.child(articleTitle).setValue(chatRoomList)
+			chatDB.push().setValue(chatRoomList)
 
-			Snackbar.make(binding.root, "채팅방이 생성 되었어요! 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
+			// DB 저장 계층 - 파는사람 하위로 사려는 사람과 그 사려는 사람의 품목 나누어서 중복 방지. 사는사람도 마찬가지. 만약에 파는사람 - 품목 이런식으로 나누면 나중에 중복 떠서 DB 겹침
+//			chatDB.child(DB_SELLER_CHAT).child(sellerId).child(articleTitle).setValue(chatRoomList)
+//			chatDB.child(DB_BUYER_CHAT).child(buyerNickName)
+//				.child(articleTitle).setValue(chatRoomList)
+
+			Snackbar.make(binding.root, "채팅방이 생성 되었어요! 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_SHORT).show()
 
 		}
 
 	}
+
+
+
+
 
 }
