@@ -1,7 +1,9 @@
 package com.example.practice_p2papp.chatlist
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +37,8 @@ class ChatListFragment : Fragment() {
 	private val chatList = mutableListOf<ChatRoomListItem>()
 
 
-//	private var sellerId : String? = null
-//	private var buyerId : String? = null
+	private var sellerId: String? = null
+	private var buyerId: String? = null
 
 //	// 사려는 사람 전용
 //	private val buyerDB: DatabaseReference by lazy {
@@ -59,6 +61,21 @@ class ChatListFragment : Fragment() {
 	private val binding: FragmentChatlistBinding
 		get() = _binding!!
 
+	override fun onAttach(context: Context) {
+		super.onAttach(context)
+		Log.d("testtest", "onAttach")
+	}
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		Log.d("testtest", "onCreate")
+
+		sellerId = arguments?.getString("sellerId")
+		buyerId = arguments?.getString("buyerId")
+		Log.d("testtest", "${arguments?.getString("buyerId")}")
+
+	}
+
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -71,6 +88,7 @@ class ChatListFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
 
 		chatList.clear()
 
@@ -85,11 +103,11 @@ class ChatListFragment : Fragment() {
 		chatListAdapter = ChatListAdapter(
 			chatListClickListener = { chatRoomListItem ->
 				val chatRoomInfo = ChatRoomItem(
-					sellerId = chatRoomListItem.sellerId,
-					buyerNickName = chatRoomListItem.buyerNickName,
+					userId = chatRoomListItem.buyerNickName,
 					sellerNickName = chatRoomListItem.sellerNickName,
 					message = "",
-					key = chatRoomListItem.currentTime
+					currentTime = chatRoomListItem.currentTime,
+					articleTitle = chatRoomListItem.articleTitle
 				)
 
 				// 채팅 메세지 계층 고유 문자열
@@ -115,7 +133,6 @@ class ChatListFragment : Fragment() {
 					model ?: return
 
 					// co DetailArticleActivity에서 sellerID, articleTitle 데이터 가져와야함. 검증에 필요 (똑같은 채팅방 중복 생성 방지)
-					// co co fragment bundle 수신... null로 들어옴. 아마 ViewPager여서 onStart 호출안되서 그러는 것 같음
 //					if(articleTitle == model.articleTitle){
 //						return@forEach
 //					}
@@ -143,16 +160,12 @@ class ChatListFragment : Fragment() {
 	}
 
 
-	override fun onResume() {
-		super.onResume()
-		chatListAdapter.notifyDataSetChanged()
-	}
-
-
 	override fun onDestroyView() {
 		super.onDestroyView()
+		Log.d("testtest", "onDestroyView")
 		_binding = null
 	}
+
 
 	//	private fun  initChatList(){
 //		when (auth.currentUser!!.uid) {

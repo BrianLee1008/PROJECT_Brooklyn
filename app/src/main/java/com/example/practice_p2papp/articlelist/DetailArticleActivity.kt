@@ -2,29 +2,19 @@ package com.example.practice_p2papp.articlelist
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.practice_p2papp.FirebaseKey
-import com.example.practice_p2papp.FirebaseKey.Companion.DB_BUYER_CHAT
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_CHAT
-import com.example.practice_p2papp.FirebaseKey.Companion.DB_SELLER_CHAT
-import com.example.practice_p2papp.R
 import com.example.practice_p2papp.adapter.DetailArticleViewPagerAdapter
 import com.example.practice_p2papp.chatlist.ChatListFragment
 import com.example.practice_p2papp.databinding.ActivityDetailArticleBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.ArticleListItem
 import com.example.practice_p2papp.item.ChatRoomListItem
-import com.example.practice_p2papp.item.UserItem
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -125,7 +115,7 @@ class DetailArticleActivity : AppCompatActivity() {
 	}
 
 	private fun setStartChatButtonListener(
-		sellerId : String,
+		sellerId: String,
 		buyerNickName: String,
 		sellerNickName: String,
 		buyerProfileImage: String,
@@ -138,24 +128,36 @@ class DetailArticleActivity : AppCompatActivity() {
 				return@setOnClickListener
 			}
 			val chatRoomList = ChatRoomListItem(
-				sellerId ,buyerNickName, sellerNickName, buyerProfileImage, currentTime, articleTitle
+				sellerId,
+				buyerNickName,
+				sellerNickName,
+				buyerProfileImage,
+				currentTime,
+				articleTitle
 			)
 
 			chatDB.push().setValue(chatRoomList)
+			sendDataForFragment(ChatListFragment(),sellerId = sellerId,buyerId = buyerNickName)
 
 			// DB 저장 계층 - 파는사람 하위로 사려는 사람과 그 사려는 사람의 품목 나누어서 중복 방지. 사는사람도 마찬가지. 만약에 파는사람 - 품목 이런식으로 나누면 나중에 중복 떠서 DB 겹침
 //			chatDB.child(DB_SELLER_CHAT).child(sellerId).child(articleTitle).setValue(chatRoomList)
 //			chatDB.child(DB_BUYER_CHAT).child(buyerNickName)
 //				.child(articleTitle).setValue(chatRoomList)
 
-			Snackbar.make(binding.root, "채팅방이 생성 되었어요! 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_SHORT).show()
+			Snackbar.make(binding.root, "채팅방이 생성 되었어요! 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_SHORT)
+				.show()
 
 		}
 
 	}
 
+	private fun sendDataForFragment(fragment: Fragment, sellerId: String, buyerId: String) {
+		val bundle = Bundle()
+		bundle.putString("sellerId",sellerId)
+		bundle.putString("buyerId",buyerId)
 
-
+		fragment.arguments = bundle
+	}
 
 
 }

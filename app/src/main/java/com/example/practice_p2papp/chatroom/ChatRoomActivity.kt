@@ -64,9 +64,9 @@ class ChatRoomActivity : AppCompatActivity() {
 		initViews(chatInfo.sellerNickName)
 
 		setSendButtonListener(
-			sellerId = chatInfo.sellerId,
-			buyerNickName = chatInfo.buyerNickName,
-			sellerNickName = chatInfo.sellerNickName
+			userId = auth.currentUser!!.uid,
+			sellerNickName = chatInfo.sellerNickName,
+			articleTitle = chatInfo.articleTitle
 		)
 
 	}
@@ -87,14 +87,14 @@ class ChatRoomActivity : AppCompatActivity() {
 
 
 	// 전송 버튼 누르면 DB 저장
-	private fun setSendButtonListener(sellerId: String, buyerNickName : String, sellerNickName: String) = with(binding){
+	private fun setSendButtonListener(userId: String, sellerNickName: String, articleTitle:String) = with(binding){
 		sendButton.setOnClickListener {
 			val message = ChatRoomItem(
-				sellerId = sellerId,
-				buyerNickName = buyerNickName,
+				userId = userId,
 				sellerNickName = sellerNickName,
 				message = messageEditText.text.toString(),
-				key = System.currentTimeMillis()
+				currentTime = System.currentTimeMillis(),
+				articleTitle = articleTitle
 			)
 
 			// 어차피 채팅 자체가 하나씩 스택 쌓이는 구조이니 push()로 해준다.

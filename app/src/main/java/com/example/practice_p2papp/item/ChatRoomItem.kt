@@ -3,13 +3,13 @@ package com.example.practice_p2papp.item
 import java.io.Serializable
 
 data class ChatRoomItem(
-	val sellerId : String,
-	val buyerNickName : String,
+	val userId : String,
 	val sellerNickName : String,
 	val message : String,
-	val key : Long
+	val currentTime : Long,
+	val articleTitle : String
 
 ) : Serializable {
 
-	constructor() : this("","","","",0)
+	constructor() : this("","","",0,"")
 }

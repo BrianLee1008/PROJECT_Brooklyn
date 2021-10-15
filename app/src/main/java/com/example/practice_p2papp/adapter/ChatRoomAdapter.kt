@@ -34,17 +34,24 @@ class 	ChatRoomAdapter : ListAdapter<ChatRoomItem, ChatRoomAdapter.ChatRoomViewH
 	inner class ChatRoomViewHolder(private val binding: ItemMessageBoxBinding) :
 		RecyclerView.ViewHolder(binding.root) {
 
+		// 뷰모델에서 각각 데이터 가져와 검증해야할듯? DB에 뭐가 저장되어있는지가 중요한게 아니라 검증할 수있는 데이터를 여기에 가져오는게 중요
 		fun bindSendingMessage(chatRoomItem: ChatRoomItem) = with(binding){
-			if(auth.currentUser!!.uid == chatRoomItem.buyerNickName){ // 내가 보낸 메세지라면
+			if(auth.currentUser!!.uid == chatRoomItem.userId) {
 				buyerMessageTextView.text = chatRoomItem.message
 				buyerMessageTextView.isVisible = true
-
-			} else { // 상대방이 보낸 메세지라면
+			} else {
 				sellerMessageTextView.text = chatRoomItem.message
 				sellerMessageTextView.isVisible = true
 			}
 
 		}
+//		fun bindGivingMessage(chatRoomItem: ChatRoomItem) = with(binding){
+//			if(auth.currentUser!!.uid == chatRoomItem.sellerId){
+//				sellerMessageTextView.text = chatRoomItem.message
+//				sellerMessageTextView.isVisible = true
+//			}
+//
+//		}
 
 	}
 
@@ -57,6 +64,8 @@ class 	ChatRoomAdapter : ListAdapter<ChatRoomItem, ChatRoomAdapter.ChatRoomViewH
 			)
 		)
 
-	override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) =
+	override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
 		holder.bindSendingMessage(currentList[position])
+	}
+
 }
