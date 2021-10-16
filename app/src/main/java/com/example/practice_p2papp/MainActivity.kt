@@ -9,11 +9,19 @@ import com.example.practice_p2papp.articlelist.ArticleListFragment
 import com.example.practice_p2papp.chatlist.ChatListFragment
 import com.example.practice_p2papp.databinding.ActivityMainBinding
 import com.example.practice_p2papp.mypage.MyPageFragment
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-	// co 바로 MVVM 들어가야 겠다. 이건 답이 없다.
-	// 일단 채팅방 중복생성에 필요한 검증 개체를 가져오기가 힘듬. 그리고 대화 메세지에 대한 로직을 구현하기 힘등. 먼저 MVVM 리팩토링 하면서 하나하나 점검하자
+	// co 바로 MVVM 들어가야 겠다.
+	// 일단 채팅방 중복생성에 필요한 검증 개체를 가져오기가 힘듬. 먼저 MVVM 리팩토링 하면서 하나하나 점검하자
+	// 그리고 회원가입하고 앱 처음 깔면 이전 아이템들중 이미지는 전부 마지막에 올린 이미지로 도배가 된다.
+
+	private val auth by lazy {
+		Firebase.auth
+	}
 
 
 	private val articleFragment = ArticleListFragment()
@@ -55,13 +63,13 @@ class MainActivity : AppCompatActivity() {
 
 	private fun startAddArticleActivity() {
 		binding.addFloatingButton.setOnClickListener {
-//			if (auth.currentUser?.uid != null) {
+			if (auth.currentUser?.uid != null) {
 			val intent = Intent(this, AddArticleActivity::class.java)
 			startActivity(intent)
-//			} else {
-//				Snackbar.make(binding.root, "로그인 하셈", Snackbar.LENGTH_LONG).show()
-//				return@setOnClickListener
-//			}
+			} else {
+				Snackbar.make(binding.root, "로그인을 해주세요", Snackbar.LENGTH_LONG).show()
+				return@setOnClickListener
+			}
 
 		}
 	}
