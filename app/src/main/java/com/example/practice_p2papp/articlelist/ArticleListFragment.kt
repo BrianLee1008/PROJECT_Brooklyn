@@ -9,33 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_ARTICLES
 import com.example.practice_p2papp.adapter.ArticleListAdapter
 import com.example.practice_p2papp.databinding.FragmentArticleListBinding
 import com.example.practice_p2papp.item.ArticleListItem
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 
 
 class ArticleListFragment : Fragment() {
 
-	private val auth: FirebaseAuth by lazy {
-		Firebase.auth
-	}
-
 	private lateinit var articleListAdapter: ArticleListAdapter
-
-	private val articleDB: DatabaseReference by lazy {
-		Firebase.database.reference.child(DB_ARTICLES)
-	}
 
 	private val articleList = mutableListOf<ArticleListItem>()
 
@@ -59,12 +48,15 @@ class ArticleListFragment : Fragment() {
 	private val binding: FragmentArticleListBinding
 		get() = _binding!!
 
+	private lateinit var viewModel: FirebaseDBViewModel
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
 		_binding = FragmentArticleListBinding.inflate(inflater, container, false)
+		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		return binding.root
 	}
 
@@ -73,22 +65,26 @@ class ArticleListFragment : Fragment() {
 
 		articleList.clear()
 
+		viewModel.articleDB.child(DB_ARTICLES).addChildEventListener(listener)
+
+		startDetailArticleActivity()
 		initRecyclerView()
-		articleDB.addChildEventListener(listener)
+
+
 
 	}
 
-
-	private fun initRecyclerView() = with(binding) {
+	private fun startDetailArticleActivity() {
 		articleListAdapter = ArticleListAdapter(
 
 			// 아이템 클릭하면 아이템 홀딩된 데이터 정렬해서 전달
 			onClickListener = { articleListItem ->
-				if (auth.currentUser == null) {
+				if (viewModel.auth.currentUser == null) {
 					return@ArticleListAdapter
 				}
 
-				if (auth.currentUser!!.uid != articleListItem.userId) { // 현재 아이디와 아이템에 등록된 아이디 다를 경우
+				// 현재 아이디와 아이템에 등록된 아이디 다를 경우
+				if (viewModel.auth.currentUser!!.uid != articleListItem.userId) {
 					val articleInfo = ArticleListItem(
 						userId = articleListItem.userId,
 						nickName = articleListItem.nickName,
@@ -99,6 +95,7 @@ class ArticleListFragment : Fragment() {
 						imageUriList = articleListItem.imageUriList,
 						userProfileImage = articleListItem.userProfileImage
 					)
+					// 데이터 가지고 상세페이지 이동
 					val intent = Intent(activity, DetailArticleActivity::class.java)
 					intent.putExtra("path", articleInfo)
 					startActivity(intent)
@@ -110,11 +107,19 @@ class ArticleListFragment : Fragment() {
 				}
 			}
 		)
+	}
+
+	private fun initRecyclerView() = with(binding) {
 		articleRecyclerView.run {
 			adapter = articleListAdapter
+
 			// 리사이클러뷰 최신순 정렬
 			layoutManager =
-				LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true).apply {
+				LinearLayoutManager(
+					requireContext(),
+					LinearLayoutManager.VERTICAL,
+					true
+				).apply {
 					stackFromEnd = true
 				}
 		}
@@ -130,7 +135,7 @@ class ArticleListFragment : Fragment() {
 
 	override fun onDestroyView() {
 		super.onDestroyView()
-		articleDB.removeEventListener(listener)
+		viewModel.articleDB.child(DB_ARTICLES).removeEventListener(listener)
 		_binding = null
 	}
 }

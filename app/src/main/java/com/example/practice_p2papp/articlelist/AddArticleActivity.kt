@@ -10,25 +10,16 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.practice_p2papp.FirebaseKey.Companion.ARTICLE_STORAGE
-import com.example.practice_p2papp.FirebaseKey.Companion.DB_ARTICLES
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
 import com.example.practice_p2papp.abstracts.PermissionActivity
-import com.example.practice_p2papp.databinding.ActivityAddArticleBinding
-import com.example.practice_p2papp.item.ArticleListItem
-import com.example.practice_p2papp.item.UserItem
 import com.example.practice_p2papp.adapter.PhotoAdapter
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
+import com.example.practice_p2papp.databinding.ActivityAddArticleBinding
+import com.example.practice_p2papp.item.UserItem
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
-import java.text.SimpleDateFormat
 
 class AddArticleActivity : PermissionActivity() {
 
@@ -36,80 +27,71 @@ class AddArticleActivity : PermissionActivity() {
 
 	private val imageUriList = mutableListOf<Uri>()
 
-	private val auth: FirebaseAuth by lazy {
-		Firebase.auth
-	}
-	private val articleDB: DatabaseReference by lazy {
-		Firebase.database.reference
-	}
-
-	private val userDB: DatabaseReference by lazy {
-		Firebase.database.reference.child(DB_USER_INFO)
-	}
-
-	private val storage: FirebaseStorage by lazy {
-		Firebase.storage
-	}
-
 	private var userNickName: String? = null
-	private var userProfileImage : String? = null
+	private var userProfileImage: String? = null
 
 	private lateinit var photoAdapter: PhotoAdapter
 
+	private val listener = object : ChildEventListener {
+		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+			val model = snapshot.getValue(UserItem::class.java)
+			model ?: return
 
+			if (viewModel.auth.currentUser!!.uid == model.userId) {
+				userProfileImage = model.imageUrl
+				userNickName = model.nickName
+			}
+		}
+
+		override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+		override fun onChildRemoved(snapshot: DataSnapshot) {}
+		override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+		override fun onCancelled(error: DatabaseError) {}
+
+	}
+
+	private lateinit var viewModel: FirebaseDBViewModel
 	private lateinit var binding: ActivityAddArticleBinding
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivityAddArticleBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
 		// userDB에서 nickName 가져온다.
-		userDB.addChildEventListener(object : ChildEventListener {
-			override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-				val model = snapshot.getValue(UserItem::class.java)
-				model ?: return
+		viewModel.userDB.child(DB_USER_INFO).addChildEventListener(listener)
 
-				if(auth.currentUser!!.uid == model.userId){
-					userProfileImage = model.imageUrl
-					userNickName = model.nickName
-				}
-
-			}
-
-			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-			override fun onChildRemoved(snapshot: DataSnapshot) {}
-			override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-			override fun onCancelled(error: DatabaseError) {}
-
-		})
-
+		initAdapterAndOnClickListener()
 		initRecyclerView()
-		setImageAddButtonListener()
 		setSubmitButtonListener()
-
+		setImageAddButtonListener()
 	}
 
-	//리사이클러뷰 셋업
-	private fun initRecyclerView() = with(binding) {
+
+	private fun initAdapterAndOnClickListener() {
 		photoAdapter = PhotoAdapter(removePhotoListener = { uri ->
 			removePhoto(uri)
 		})
+	}
+
+
+	private fun initRecyclerView() = with(binding) {
+
 		photoRecyclerView.run {
 			adapter = photoAdapter
 		}
 
 	}
 
-
 	// DB에 항목 업로드, userId, nickName, title, content, price, date, imageUriList
 	private fun setSubmitButtonListener() = with(binding) {
 		submitButton.setOnClickListener {
-			if (auth.currentUser == null) {
+			if (viewModel.auth.currentUser == null) {
 				return@setOnClickListener
 			}
 
-			val userId = auth.currentUser?.uid.toString()
+			val userId = viewModel.auth.currentUser?.uid.toString()
 			val nickName = userNickName!!
 			val title = titleEditText.text.toString()
 			val content = contentEditText.text.toString()
@@ -122,30 +104,36 @@ class AddArticleActivity : PermissionActivity() {
 			// imageUrlList가 있을 떄와 없을떄로 나누어짐
 			if (imageUriList.isNotEmpty()) {
 				lifecycleScope.launch {
-					val results = uploadPhoto(imageUriList)
-					uploadArticles(
-						userId,
-						nickName,
-						title,
-						content,
-						"$price 원",
-						date,
-						results.filterIsInstance<String>(),
+					val results = viewModel.articleImageStorageUpload(imageUriList)
+					viewModel.uploadArticlesInDB(
+						userId = userId,
+						nickName = nickName,
+						title = title,
+						content = content,
+						price = "$price 원",
+						date = date,
+						imageUriList = results.filterIsInstance<String>(),
 						userProfileImage = userProfileImage
 					)
+					hideProgress()
+					finish()
 				}
 
 			} else {
-				uploadArticles(
-					userId,
-					nickName,
-					title,
-					content,
-					"$price 원",
-					date,
-					listOf(),
-					userProfileImage = userProfileImage
-				)
+				lifecycleScope.launch {
+					viewModel.uploadArticlesInDB(
+						userId = userId,
+						nickName = nickName,
+						title = title,
+						content = content,
+						price = "$price 원",
+						date = date,
+						imageUriList = listOf(),
+						userProfileImage = userProfileImage
+					)
+					hideProgress()
+					finish()
+				}
 
 			}
 
@@ -153,54 +141,13 @@ class AddArticleActivity : PermissionActivity() {
 
 	}
 
-	// Storage 저장
-	private suspend fun uploadPhoto(uriList: List<Uri>) = withContext(Dispatchers.IO) {
-		val deferred: List<Deferred<Any>> = uriList.mapIndexed { index, uri ->
-			lifecycleScope.async {
-				val fileName = "image_${index}.png"
-				val storagePutFile =
-					storage.reference.child(ARTICLE_STORAGE).child(fileName).putFile(uri).await()
-				return@async storagePutFile.storage.downloadUrl.await().toString()
-			}
-		}
-		return@withContext deferred.awaitAll()
-	}
-
-	// DB 저장
-	private fun uploadArticles(
-		userId: String,
-		nickName: String,
-		title: String,
-		content: String,
-		price: String,
-		date: Long,
-		imageUriList: List<String>,
-		userProfileImage: String
-	) {
-		val model = ArticleListItem(
-			userId,
-			nickName,
-			title,
-			content,
-			price,
-			date,
-			imageUriList,
-			userProfileImage
-		)
-
-		articleDB.child(DB_ARTICLES).child("$date").setValue(model)
-
-		hideProgress()
-		finish()
-
-	}
 
 	private fun removePhoto(uri: Uri) {
 		imageUriList.remove(uri)
 		photoAdapter.setPhotoList(imageUriList)
 	}
 
-	// 아래로 퍼미션 및 이미지 업로드 관련
+	// ---아래로 퍼미션 및 이미지 업로드 관련---
 
 	private fun setImageAddButtonListener() = with(binding) {
 		imageAddButton.setOnClickListener {
@@ -232,7 +179,7 @@ class AddArticleActivity : PermissionActivity() {
 
 	private fun openCamera() {
 		val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-		createImageUri(newFileName(), "image/*").let { uri ->
+		createImageUri(viewModel.newFileName(), "image/*").let { uri ->
 			captureImageUri = uri
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, captureImageUri)
 			startActivityForResult(intent, CAMERA_RESULT_CODE)
@@ -261,12 +208,6 @@ class AddArticleActivity : PermissionActivity() {
 		return contentResolver.insert(insert, value)
 	}
 
-	// 고유 이름 생성
-	private fun newFileName(): String {
-		val sdf = SimpleDateFormat("yyyyMMdd_HHmmss")
-		val fileName = sdf.format(System.currentTimeMillis())
-		return "$fileName.jpg"
-	}
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
@@ -282,30 +223,8 @@ class AddArticleActivity : PermissionActivity() {
 			GALLERY_RESULT_CODE -> {
 
 				data?.let { intent ->
-					val notNullClipData = intent.clipData != null
-					val notNullData = intent.data != null
+					viewModel.galleryResult(intent = intent, uriList = uriList)
 
-					when {
-						// 복수 이미지 선택시
-						notNullClipData -> {
-							val count = intent.clipData!!.itemCount
-							if (count > 10) {
-								Toast.makeText(this, "한번에 열장 이상 선택하지 못합니다..", Toast.LENGTH_SHORT)
-									.show()
-								return@let
-							}
-							for (i in 0 until count) {
-								val imageUri = intent.clipData!!.getItemAt(i).uri
-								uriList.add(imageUri)
-							}
-						}
-						else -> {
-							// 단수 이미지 선택시
-							if (notNullData) {
-								uriList.add(intent.data!!)
-							}
-						}
-					}
 					imageUriList.addAll(uriList)
 					photoAdapter.setPhotoList(imageUriList)
 				}
@@ -314,7 +233,7 @@ class AddArticleActivity : PermissionActivity() {
 			CAMERA_RESULT_CODE -> {
 
 				captureImageUri?.let { uri ->
-					uriList.add(uri)
+					viewModel.cameraResult(uriList = uriList, uri = uri)
 					captureImageUri = null
 				}
 				imageUriList.addAll(uriList)
@@ -334,7 +253,6 @@ class AddArticleActivity : PermissionActivity() {
 			}
 			CAMERA_REQUEST_CODE -> {
 				openCamera()
-				Log.d("testtest", "$CAMERA_RESULT_CODE 4")
 			}
 		}
 	}

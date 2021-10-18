@@ -1,6 +1,5 @@
 package com.example.practice_p2papp.signinup
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
@@ -10,54 +9,35 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.practice_p2papp.FirebaseKey
-import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
-import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_PROFILE
 import com.example.practice_p2papp.MainActivity
 import com.example.practice_p2papp.abstracts.PermissionActivity
 import com.example.practice_p2papp.databinding.ActivitySignInBinding
 import com.example.practice_p2papp.extensions.circleCropImage
-import com.example.practice_p2papp.item.UserItem
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
-import java.text.SimpleDateFormat
 
 // 세부정보 기입 후 관리
 class SignInActivity : PermissionActivity() {
 
-	private var storageUrlResult : String? = null
+	private var storageUrlResult: String? = null
 
 	private var captureImageUri: Uri? = null
 
-	private val auth: FirebaseAuth by lazy {
-		Firebase.auth
-	}
-
-	private val userDB: DatabaseReference by lazy {
-		Firebase.database.reference
-	}
-
-	private val storage: FirebaseStorage by lazy {
-		Firebase.storage
-	}
+	private lateinit var viewModel: FirebaseDBViewModel
 
 	private lateinit var binding: ActivitySignInBinding
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivitySignInBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
 		setSignUpButtonListener()
 		setProfileImage()
 	}
+
 
 	private fun setProfileImage() = with(binding) {
 		profileImageView.setOnClickListener {
@@ -73,10 +53,10 @@ class SignInActivity : PermissionActivity() {
 
 	private fun openCamera() {
 		val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-		createImageUri(newFileName(), "image/*").let { uri ->
+		createImageUri(viewModel.newFileName(), "image/*").let { uri ->
 			captureImageUri = uri
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, captureImageUri)
-			startActivityForResult(intent, PermissionActivity.CAMERA_RESULT_CODE)
+			startActivityForResult(intent, CAMERA_RESULT_CODE)
 		}
 	}
 
@@ -99,36 +79,6 @@ class SignInActivity : PermissionActivity() {
 		return contentResolver.insert(insert, value)
 	}
 
-	// 고유 이름 생성
-	@SuppressLint("SimpleDateFormat")
-	private fun newFileName(): String {
-		val sdf = SimpleDateFormat("yyyyMMdd_HHmmss")
-		val fileName = sdf.format(System.currentTimeMillis())
-		return "$fileName.jpg"
-	}
-
-	// 이미지 스토리지 업로드
-	private suspend fun imageStorageUpload(uri: Uri) = withContext(Dispatchers.IO) {
-		val fileName = "profileImage_${uri}.png"
-		val deferred: Deferred<String> =
-			lifecycleScope.async {
-				val storagePutFile = storage.reference.child(FirebaseKey.ARTICLE_STORAGE)
-					.child(FirebaseKey.STORAGE_PROFILE).child(fileName).putFile(uri).await()
-				return@async storagePutFile.storage.downloadUrl.await().toString()
-			}
-		return@withContext deferred.await()
-	}
-
-	// 회원 정보 DB 업로드
-	private suspend fun uploadUserInfo(userId: String, nickName: String, imageUrl: String) =
-		withContext(Dispatchers.IO) {
-			lifecycleScope.launch {
-				val model = UserItem(userId = userId, nickName = nickName, imageUrl = imageUrl)
-				userDB.child(DB_USER_INFO).child(userId).setValue(model)
-			}
-			startMainActivity()
-		}
-
 
 	// 이미지 뷰에 뿌리고 Storage, DB에 저장
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -147,13 +97,11 @@ class SignInActivity : PermissionActivity() {
 
 					when {
 						notNullData -> {
-							if (notNullData) {
-								lifecycleScope.launch {
-									showProgress()
-									storageUrlResult = imageStorageUpload(intent.data!!)
-									binding.profileImageView.circleCropImage(storageUrlResult!!)
-									hideProgress()
-								}
+							lifecycleScope.launch {
+								showProgress()
+								storageUrlResult = viewModel.imageStorageUpload(intent.data!!)
+								binding.profileImageView.circleCropImage(storageUrlResult!!)
+								hideProgress()
 							}
 						}
 						else -> {
@@ -167,7 +115,7 @@ class SignInActivity : PermissionActivity() {
 				captureImageUri?.let { uri ->
 					lifecycleScope.launch {
 						showProgress()
-						storageUrlResult = imageStorageUpload(uri)
+						storageUrlResult = viewModel.imageStorageUpload(uri)
 						binding.profileImageView.circleCropImage(storageUrlResult!!)
 						hideProgress()
 					}
@@ -226,7 +174,8 @@ class SignInActivity : PermissionActivity() {
 	private fun setSignUpButtonListener() = with(binding) {
 		signUpButton.setOnClickListener {
 
-			if (auth.currentUser == null) {
+			// 예외처리
+			if (viewModel.auth.currentUser == null) { // 회원 목록에 없다면
 				Toast.makeText(
 					this@SignInActivity,
 					"회원가입 정보가 저장되지 않았습니다. 다시 가입해주세요",
@@ -234,31 +183,27 @@ class SignInActivity : PermissionActivity() {
 				).show()
 				return@setOnClickListener
 
-			} else {
+			} else { // 회원 목록엔 있지만 nickName 적지 않았다면
 
-//				val isUntilFourNickName = nickNameEditText.text.toString().toInt()
-				val isEmptyNickName = nickNameEditText.text.isEmpty()
-
-				when {
-					isEmptyNickName -> {
-						nickNameEmptyCheck.isVisible = true
-						return@setOnClickListener
-					}
-					else -> {
-
-					}
-
+				if(nickNameEditText.text.isEmpty()){
+					nickNameEmptyCheck.isVisible = true
+					return@setOnClickListener
 				}
 
 				val nickName = nickNameEditText.text.toString()
-				val userId = auth.currentUser!!.uid
+				val userId = viewModel.auth.currentUser!!.uid
 
 				lifecycleScope.launch {
-					if(storageUrlResult==null){
+					if (storageUrlResult == null) {
 						binding.imageViewEmptyCheck.isVisible = true
 						return@launch
 					}
-					uploadUserInfo(userId = userId,nickName = nickName,imageUrl = storageUrlResult!!)
+					viewModel.uploadUserInfo(
+						userId = userId,
+						nickName = nickName,
+						imageUrl = storageUrlResult!!
+					)
+					startMainActivity()
 					nickNameEmptyCheck.isVisible = false
 					binding.imageViewEmptyCheck.isVisible = false
 				}

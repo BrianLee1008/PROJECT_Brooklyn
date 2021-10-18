@@ -5,25 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.example.practice_p2papp.MainActivity
 import com.example.practice_p2papp.databinding.ActivityBrooklynEmailSignInBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 
 class BrooklynEmailSignInActivity : AppCompatActivity() {
 
-	private val auth : FirebaseAuth by lazy {
-		Firebase.auth
-	}
 
 	private lateinit var binding : ActivityBrooklynEmailSignInBinding
+	private lateinit var viewModel : FirebaseDBViewModel
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivityBrooklynEmailSignInBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		if (auth.currentUser != null){
+		if (viewModel.auth.currentUser != null){
 			finish()
 		}
 
@@ -62,14 +61,14 @@ class BrooklynEmailSignInActivity : AppCompatActivity() {
 				}*/
 			}
 
-				auth.signInWithEmailAndPassword(email,passwordd).
+				viewModel.auth.signInWithEmailAndPassword(email,passwordd).
 				addOnCompleteListener(this@BrooklynEmailSignInActivity) { task ->
 					if(task.isSuccessful){
 						successSignIn()
 						Toast.makeText(this@BrooklynEmailSignInActivity, "로그인에 성공했습니다", Toast.LENGTH_SHORT)
 							.show()
 						startMainActivity()
-						finish()
+						finishAffinity()
 					} else {
 						Toast.makeText(this@BrooklynEmailSignInActivity, "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요", Toast.LENGTH_SHORT)
 							.show()
@@ -79,7 +78,7 @@ class BrooklynEmailSignInActivity : AppCompatActivity() {
 	}
 
 	private fun successSignIn() = with(binding){
-		if(auth.currentUser == null){
+		if(viewModel.auth.currentUser == null){
 			Toast.makeText(this@BrooklynEmailSignInActivity, "로그인에 실패했습니다", Toast.LENGTH_SHORT).show()
 			return
 		}

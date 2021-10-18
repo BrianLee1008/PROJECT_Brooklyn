@@ -7,19 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.practice_p2papp.FirebaseKey
 import com.example.practice_p2papp.databinding.FragmentMypageBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.UserItem
 import com.example.practice_p2papp.mypage.editprofile.DetailProfileActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 // co 15 다른 아이디로 로그인해도 최초 로그인한 아이디로 로그인됨.
 //		뭐가 문제일까. 아마도 DB 최신순으로 업데이트 된 데이터를 가져와서 그런듯. 원랜 안그랬는데 뭐때문에?
@@ -32,20 +29,13 @@ import com.google.firebase.ktx.Firebase
 
 class MyPageFragment : Fragment() {
 
-	private val auth: FirebaseAuth by lazy {
-		Firebase.auth
-	}
-	private val userDB: DatabaseReference by lazy {
-		Firebase.database.reference.child(FirebaseKey.DB_USER_INFO)
-	}
-
 	// 하위 child읽어올려고 하면 에러 뜸. 상위 child에서 갱신되는 것들 읽어오는 형식임.
 	private val listener = object : ChildEventListener {
 		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 			val model = snapshot.getValue(UserItem::class.java)
 			model ?: return
 
-			if(auth.currentUser!!.uid == model.userId){
+			if(firebaseViewModel.auth.currentUser!!.uid == model.userId){
 				binding.profileImageView.circleCropImage(model.imageUrl!!)
 				binding.nickNameHint.text = model.nickName
 			}
@@ -67,23 +57,26 @@ class MyPageFragment : Fragment() {
 	private val binding: FragmentMypageBinding
 		get() = _binding!!
 
+	private lateinit var firebaseViewModel : FirebaseDBViewModel
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
 		_binding = FragmentMypageBinding.inflate(inflater, container, false)
+		firebaseViewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		if(auth.currentUser == null){
+		if(firebaseViewModel.auth.currentUser == null){
 			Toast.makeText(activity, "로그인 해주세요.", Toast.LENGTH_SHORT).show()
 			return
 		}
-		userDB.addChildEventListener(listener)
+		firebaseViewModel.userDB.child(FirebaseKey.DB_USER_INFO).addChildEventListener(listener)
 
 		setEditProfileButtonListener()
 
@@ -92,7 +85,7 @@ class MyPageFragment : Fragment() {
 
 	private fun setEditProfileButtonListener() = with(binding) {
 		profileImageView.setOnClickListener {
-			if (auth.currentUser == null) {
+			if (firebaseViewModel.auth.currentUser == null) {
 				return@setOnClickListener
 			}
 			val intent = Intent(requireContext(), DetailProfileActivity::class.java)

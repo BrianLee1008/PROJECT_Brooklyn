@@ -11,8 +11,6 @@ import com.google.firebase.ktx.Firebase
 // 로그인 방법 정리
 class LoginMethodActivity : AppCompatActivity() {
 
-
-
 	private lateinit var binding : ActivityLoginMethodBinding
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

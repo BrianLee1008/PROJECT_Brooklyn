@@ -1,6 +1,5 @@
 package com.example.practice_p2papp.mypage.editprofile
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues
@@ -11,51 +10,36 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.practice_p2papp.FirebaseKey
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
 import com.example.practice_p2papp.StartActivity
 import com.example.practice_p2papp.abstracts.PermissionActivity
 import com.example.practice_p2papp.databinding.ActivityDetailProfileBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.UserItem
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
-import java.text.SimpleDateFormat
 
 // 프로필 수정 및 로그아웃 Activity
 class DetailProfileActivity : PermissionActivity() {
 
 	private var editImageUrl: String? = null
 	private var loadListenerImage: String? = null
-
 	private var captureImageUri: Uri? = null
-
-	private val auth: FirebaseAuth by lazy {
-		Firebase.auth
-	}
-	private val userDB: DatabaseReference by lazy {
-		Firebase.database.reference.child(DB_USER_INFO)
-	}
-	private val storage: FirebaseStorage by lazy {
-		Firebase.storage
-	}
 
 	// 특정 child 값 받아오는 로직 필요
 	private val loadListener = object : ChildEventListener {
+
 		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 			val model = snapshot.getValue(UserItem::class.java)
 			model ?: return
 
 			// UID 검증해서 특정 Child값 받아옴
-			if (auth.currentUser!!.uid == model.userId) {
+			if (firebaseViewModel.auth.currentUser!!.uid == model.userId) {
 				binding.nickNameTextView.text = model.nickName
 				binding.profileImageView.circleCropImage(model.imageUrl!!)
 				loadListenerImage = model.imageUrl
@@ -71,18 +55,23 @@ class DetailProfileActivity : PermissionActivity() {
 
 
 	private lateinit var binding: ActivityDetailProfileBinding
+	private lateinit var firebaseViewModel : FirebaseDBViewModel
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		binding = ActivityDetailProfileBinding.inflate(layoutInflater)
+		firebaseViewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-		setSignOutButtonListener()
-		userDB.addChildEventListener(loadListener)
+
+		firebaseViewModel.userDB.child(DB_USER_INFO)
+			.addChildEventListener(loadListener)
 		binding.nickNameTextView.isVisible = true
 
-		initNickNameTest()
-		editNickNameTest()
 
+		setSignOutButtonListener()
+		initNickName()
+		editNickName()
 		setProfileImage()
 
 	}
@@ -90,17 +79,98 @@ class DetailProfileActivity : PermissionActivity() {
 
 	private fun setSignOutButtonListener() = with(binding) {
 		signOutButton.setOnClickListener {
-			if (auth.currentUser == null) {
+			if (firebaseViewModel.auth.currentUser == null) {
 				Toast.makeText(this@DetailProfileActivity, "로그인을 다시 해주세요.", Toast.LENGTH_SHORT)
 					.show()
 				return@setOnClickListener
 			}
-			auth.signOut()
+			firebaseViewModel.auth.signOut()
 			Toast.makeText(this@DetailProfileActivity, "로그아웃 했습니다", Toast.LENGTH_SHORT).show()
 			startActivity(Intent(this@DetailProfileActivity, StartActivity::class.java))
-			// xo 모든 Acivity 경로 지우기
+			//모든 Acivity 경로 지우기
 			ActivityCompat.finishAffinity(this@DetailProfileActivity)
 		}
+	}
+
+
+
+
+
+	private fun initNickName() = with(binding) {
+		nickNameContainer.setOnClickListener {
+			nickNameTextView.isVisible = false
+			nickNameEditText.setText(nickNameTextView.text)
+			nickNameEditText.isVisible = true
+			submitButton.isVisible = true
+		}
+
+	}
+
+	private fun editNickName() = with(binding) {
+		submitButton.setOnClickListener {
+			if (firebaseViewModel.auth.currentUser == null) {
+				return@setOnClickListener
+			}
+
+			if (nickNameEditText.text.isEmpty()) {
+				Toast.makeText(
+					this@DetailProfileActivity,
+					"닉네임은 2글자 이상으로 작성해주셔야 해요.",
+					Toast.LENGTH_SHORT
+				).show()
+				return@setOnClickListener
+			}
+
+			// 이미지 변경이 있으면 변경된 이미지 저장. 없으면 원래 불러왔던 이미지 저장
+			if (editImageUrl != null) {
+				editProfileAndUpdateDB(
+					userId = firebaseViewModel.auth.currentUser!!.uid,
+					nickName = nickNameEditText.text.toString(),
+					imageUrl = editImageUrl
+				)
+				editImageUrl = null
+			} else {
+				editProfileAndUpdateDB(
+					userId = firebaseViewModel.auth.currentUser!!.uid,
+					nickName = nickNameEditText.text.toString(),
+					imageUrl = loadListenerImage
+				)
+				loadListenerImage = null
+			}
+			nickNameTextView.isVisible = true
+			nickNameEditText.isVisible = false
+			submitButton.isVisible = false
+			nickNameTextView.text = nickNameEditText.text.toString()
+		}
+
+	}
+
+
+	// 프로필 업데이트 후 데이터 교체
+	private fun editProfileAndUpdateDB(userId: String, nickName: String, imageUrl: String?) {
+		val key = firebaseViewModel.userDB.child(userId).key
+		if (key == null) {
+			Toast.makeText(this, "수정에 실패 했습니다.", Toast.LENGTH_SHORT).show()
+			return
+		}
+
+		val profile = UserItem(userId = userId, nickName = nickName, imageUrl = imageUrl)
+		val profileValue = profile.toMap()
+
+		val childUpdates = hashMapOf<String, Any>(
+			"/$DB_USER_INFO/$userId" to profileValue,
+			// "/$DB_USER_PROFILE/$userId/$key" to profileValue -> 동시 다른 하위목록 업데이트 가능
+		)
+
+		Firebase.database.reference.updateChildren(childUpdates)
+			.addOnSuccessListener {
+				Toast.makeText(this, "프로필이 변경되었어요.", Toast.LENGTH_SHORT).show()
+			}
+			.addOnFailureListener {
+				Toast.makeText(this, "프로필 수정에 실패했어요.", Toast.LENGTH_SHORT).show()
+				return@addOnFailureListener
+			}
+
 	}
 
 	// 이미지 수정 - 카메라/ 갤러리 선택 후 이미지 뿌리기 - Storage에 저장 및 DB 업데이트
@@ -119,7 +189,7 @@ class DetailProfileActivity : PermissionActivity() {
 
 	private fun openCamera() {
 		val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-		createImageUri(newFileName(), "image/*").let { uri ->
+		createImageUri(firebaseViewModel.newFileName(), "image/*").let { uri ->
 			captureImageUri = uri
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, captureImageUri)
 			startActivityForResult(intent, CAMERA_RESULT_CODE)
@@ -145,25 +215,6 @@ class DetailProfileActivity : PermissionActivity() {
 		return contentResolver.insert(insert, value)
 	}
 
-	// 고유 이름 생성
-	@SuppressLint("SimpleDateFormat")
-	private fun newFileName(): String {
-		val sdf = SimpleDateFormat("yyyyMMdd_HHmmss")
-		val fileName = sdf.format(System.currentTimeMillis())
-		return "$fileName.jpg"
-	}
-
-	// 이미지 스토리지 업로드
-	private suspend fun imageStorageUpload(uri: Uri) = withContext(Dispatchers.IO) {
-		val fileName = "profileImage_${uri}.png"
-		val deferred: Deferred<String> =
-			lifecycleScope.async {
-				val storagePutFile = storage.reference.child(FirebaseKey.ARTICLE_STORAGE)
-					.child(FirebaseKey.STORAGE_PROFILE).child(fileName).putFile(uri).await()
-				return@async storagePutFile.storage.downloadUrl.await().toString()
-			}
-		return@withContext deferred.await()
-	}
 
 	// 이미지 뷰에 뿌리고 Storage, DB에 저장
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -182,28 +233,26 @@ class DetailProfileActivity : PermissionActivity() {
 
 					when {
 						notNullData -> {
-							if (notNullData) {
-								lifecycleScope.launch {
-									showProgress()
-									val urlResult = imageStorageUpload(intent.data!!)
-									binding.profileImageView.circleCropImage(urlResult)
-									editImageUrl = urlResult
-									hideProgress()
-								}
+							lifecycleScope.launch {
+								showProgress()
+								val urlResult = firebaseViewModel.imageStorageUpload(intent.data!!)
+								binding.profileImageView.circleCropImage(urlResult)
+								editImageUrl = urlResult
+								hideProgress()
 							}
 						}
-						else -> {
-						}
+						else -> {}
 					}
 				}
 
 			}
+
 			CAMERA_RESULT_CODE -> {
 
 				captureImageUri?.let { uri ->
 					lifecycleScope.launch {
 						showProgress()
-						val urlResult = imageStorageUpload(uri)
+						val urlResult = firebaseViewModel.imageStorageUpload(uri)
 						binding.profileImageView.circleCropImage(urlResult)
 						editImageUrl = urlResult
 						hideProgress()
@@ -213,82 +262,6 @@ class DetailProfileActivity : PermissionActivity() {
 			}
 		}
 
-
-	}
-
-
-	// 데이터 교체
-	private fun editProfileAndUpdateDB(userId: String, nickName: String, imageUrl: String?) {
-		val key = userDB.child(userId).key
-		if (key == null) {
-			Toast.makeText(this, "수정에 실패 했습니다.", Toast.LENGTH_SHORT).show()
-			return
-		}
-
-		val profile = UserItem(userId = userId, nickName = nickName, imageUrl = imageUrl)
-		val profileValue = profile.toMap()
-
-		val childUpdates = hashMapOf<String, Any>(
-			"/$DB_USER_INFO/$userId" to profileValue,
-			// "/$DB_USER_PROFILE/$userId/$key" to profileValue -> 동시 다른 하위목록 업데이트 가능
-		)
-		Firebase.database.reference.updateChildren(childUpdates)
-			.addOnSuccessListener {
-				Toast.makeText(this, "프로필이 변경되었어요.", Toast.LENGTH_SHORT).show()
-			}
-			.addOnFailureListener {
-				Toast.makeText(this, "프로필 수정에 실패했어요.", Toast.LENGTH_SHORT).show()
-				return@addOnFailureListener
-			}
-
-	}
-
-
-	private fun initNickNameTest() = with(binding) {
-		nickNameContainer.setOnClickListener {
-			nickNameTextView.isVisible = false
-			nickNameEditText.setText(nickNameTextView.text)
-			nickNameEditText.isVisible = true
-			submitButton.isVisible = true
-		}
-
-	}
-
-	private fun editNickNameTest() = with(binding) {
-		submitButton.setOnClickListener {
-			if (auth.currentUser == null) {
-				return@setOnClickListener
-			}
-			if (nickNameEditText.text.isEmpty()) {
-				Toast.makeText(
-					this@DetailProfileActivity,
-					"닉네임은 2글자 이상으로 작성해주셔야 해요.",
-					Toast.LENGTH_SHORT
-				).show()
-				return@setOnClickListener
-			}
-
-			// 이미지 변경이 있으면 변경된 이미지 저장. 없으면 원래 불러왔던 이미지 저장
-			if (editImageUrl != null) {
-				editProfileAndUpdateDB(
-					userId = auth.currentUser!!.uid,
-					nickName = nickNameEditText.text.toString(),
-					imageUrl = editImageUrl
-				)
-				editImageUrl = null
-			} else {
-				editProfileAndUpdateDB(
-					userId = auth.currentUser!!.uid,
-					nickName = nickNameEditText.text.toString(),
-					imageUrl = loadListenerImage
-				)
-				loadListenerImage = null
-			}
-			nickNameTextView.isVisible = true
-			nickNameEditText.isVisible = false
-			submitButton.isVisible = false
-			nickNameTextView.text = nickNameEditText.text.toString()
-		}
 
 	}
 

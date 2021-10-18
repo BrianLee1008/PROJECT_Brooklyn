@@ -5,19 +5,19 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.example.practice_p2papp.databinding.ActivitySignUpBinding
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 
 //회원가입
 class SignUpActivity : AppCompatActivity() {
-	private val auth by lazy {
-		Firebase.auth
-	}
 
 	private lateinit var binding: ActivitySignUpBinding
+	private lateinit var viewModel : FirebaseDBViewModel
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivitySignUpBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
@@ -49,7 +49,7 @@ class SignUpActivity : AppCompatActivity() {
 					emailErrorCheck.isVisible = false
 					return@setOnClickListener
 				}
-				// 8자 이하 예외처리 할려했는데 안됨
+				// 8자 이하 예외처리
 				/*untilEtePassword -> {
 					passwordErrorCheck.isVisible = true
 					checkPasswordErrorCheck.isVisible = false
@@ -70,7 +70,7 @@ class SignUpActivity : AppCompatActivity() {
 			val email = emailEditText.text.toString()
 			val password = passwordCheckEditText.text.toString()
 
-			auth.createUserWithEmailAndPassword(email, password)
+			viewModel.auth.createUserWithEmailAndPassword(email, password)
 				.addOnCompleteListener { task ->
 					if (task.isSuccessful) {
 						Toast.makeText(this@SignUpActivity, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT)
@@ -99,11 +99,10 @@ class SignUpActivity : AppCompatActivity() {
 		}
 	}
 
-	// 가입 예외처리
 	private fun startSignInActivity() {
-
 		val intent = Intent(this,SignInActivity::class.java)
 		startActivity(intent)
+		finishAffinity()
 
 	}
 }

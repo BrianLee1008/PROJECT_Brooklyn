@@ -3,21 +3,14 @@ package com.example.practice_p2papp.articlelist
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.practice_p2papp.FirebaseKey.Companion.DB_CHAT
 import com.example.practice_p2papp.adapter.DetailArticleViewPagerAdapter
-import com.example.practice_p2papp.chatlist.ChatListFragment
 import com.example.practice_p2papp.databinding.ActivityDetailArticleBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.ArticleListItem
-import com.example.practice_p2papp.item.ChatRoomListItem
+import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,29 +19,20 @@ import java.util.*
 
 class DetailArticleActivity : AppCompatActivity() {
 
-	private val chatListFragment = ChatListFragment()
-
-	private val auth: FirebaseAuth by lazy {
-		Firebase.auth
-	}
-
-	private val chatDB: DatabaseReference by lazy {
-		Firebase.database.reference.child(DB_CHAT)
-	}
-
-	private var myNickName: String = ""
-
 
 	private lateinit var viewPagerAdapter: DetailArticleViewPagerAdapter
 
 
+	private lateinit var firebaseViewModel: FirebaseDBViewModel
 	private lateinit var binding: ActivityDetailArticleBinding
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		firebaseViewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivityDetailArticleBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		if (auth.currentUser == null) {
+		if (firebaseViewModel.auth.currentUser == null) {
 			return
 		}
 
@@ -69,7 +53,7 @@ class DetailArticleActivity : AppCompatActivity() {
 		setStartChatButtonListener(
 			// TODO buyerNickName 값 nickName으로 변경
 			sellerId = getArticleInfo.userId,
-			buyerNickName = auth.currentUser!!.uid,
+			buyerNickName = firebaseViewModel.auth.currentUser!!.uid,
 			sellerNickName = getArticleInfo.nickName,
 			buyerProfileImage = getArticleInfo.userProfileImage,
 			currentTime = getArticleInfo.date,
@@ -124,20 +108,18 @@ class DetailArticleActivity : AppCompatActivity() {
 	) = with(binding) {
 
 		chatButton.setOnClickListener {
-			if (auth.currentUser == null) {
+			if (firebaseViewModel.auth.currentUser == null) {
 				return@setOnClickListener
 			}
-			val chatRoomList = ChatRoomListItem(
-				sellerId,
-				buyerNickName,
-				sellerNickName,
-				buyerProfileImage,
-				currentTime,
-				articleTitle
-			)
 
-			chatDB.push().setValue(chatRoomList)
-			sendDataForFragment(ChatListFragment(),sellerId = sellerId,buyerId = buyerNickName)
+			firebaseViewModel.uploadChatListInfoInDB(
+				sellerId = sellerId,
+				buyerNickName = buyerNickName,
+				sellerNickName = sellerNickName,
+				buyerProfileImage = buyerProfileImage,
+				currentTime = currentTime,
+				articleTitle = articleTitle
+			)
 
 			// DB 저장 계층 - 파는사람 하위로 사려는 사람과 그 사려는 사람의 품목 나누어서 중복 방지. 사는사람도 마찬가지. 만약에 파는사람 - 품목 이런식으로 나누면 나중에 중복 떠서 DB 겹침
 //			chatDB.child(DB_SELLER_CHAT).child(sellerId).child(articleTitle).setValue(chatRoomList)
@@ -149,14 +131,6 @@ class DetailArticleActivity : AppCompatActivity() {
 
 		}
 
-	}
-
-	private fun sendDataForFragment(fragment: Fragment, sellerId: String, buyerId: String) {
-		val bundle = Bundle()
-		bundle.putString("sellerId",sellerId)
-		bundle.putString("buyerId",buyerId)
-
-		fragment.arguments = bundle
 	}
 
 
