@@ -7,16 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.practice_p2papp.FirebaseKey
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.practice_p2papp.databinding.FragmentMypageBinding
 import com.example.practice_p2papp.extensions.circleCropImage
-import com.example.practice_p2papp.item.UserItem
 import com.example.practice_p2papp.mypage.editprofile.DetailProfileActivity
 import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.example.practice_p2papp.viewmodel.factory.FirebaseViewModelFactory
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 
 // co 15 다른 아이디로 로그인해도 최초 로그인한 아이디로 로그인됨.
 //		뭐가 문제일까. 아마도 DB 최신순으로 업데이트 된 데이터를 가져와서 그런듯. 원랜 안그랬는데 뭐때문에?
@@ -29,35 +27,18 @@ import com.google.firebase.database.DatabaseError
 
 class MyPageFragment : Fragment() {
 
-	// 하위 child읽어올려고 하면 에러 뜸. 상위 child에서 갱신되는 것들 읽어오는 형식임.
-	private val listener = object : ChildEventListener {
-		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-			val model = snapshot.getValue(UserItem::class.java)
-			model ?: return
-
-			if(firebaseViewModel.auth.currentUser!!.uid == model.userId){
-				binding.profileImageView.circleCropImage(model.imageUrl!!)
-				binding.nickNameHint.text = model.nickName
-			}
-		}
-		override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-			val model = snapshot.getValue(UserItem::class.java)
-			model ?: return
-
-			binding.profileImageView.circleCropImage(model.imageUrl!!)
-			binding.nickNameHint.text = model.nickName
-		}
-		override fun onChildRemoved(snapshot: DataSnapshot) {}
-		override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-		override fun onCancelled(error: DatabaseError) {}
-	}
-
 
 	private var _binding: FragmentMypageBinding? = null
 	private val binding: FragmentMypageBinding
 		get() = _binding!!
 
-	private lateinit var firebaseViewModel : FirebaseDBViewModel
+	private val appRepository = AppRepository()
+
+	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel> {
+		FirebaseViewModelFactory(
+			appRepository
+		)
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -65,27 +46,42 @@ class MyPageFragment : Fragment() {
 		savedInstanceState: Bundle?
 	): View {
 		_binding = FragmentMypageBinding.inflate(inflater, container, false)
-		firebaseViewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		if(firebaseViewModel.auth.currentUser == null){
+		if (firebaseDBViewModel.auth.currentUser == null) {
 			Toast.makeText(activity, "로그인 해주세요.", Toast.LENGTH_SHORT).show()
 			return
 		}
-		firebaseViewModel.userDB.child(FirebaseKey.DB_USER_INFO).addChildEventListener(listener)
 
+		userInfoObserve()
 		setEditProfileButtonListener()
 
 
 	}
 
+	// UserInfo Read
+	private fun userInfoObserve() {
+		firebaseDBViewModel.userInfoLiveData
+			.observe(
+				viewLifecycleOwner,
+				Observer {
+					it.forEach { userItem ->
+						if (firebaseDBViewModel.auth.currentUser!!.uid == userItem.userId) {
+							binding.profileImageView.circleCropImage(userItem.imageUrl!!)
+							binding.nickNameHint.text = userItem.nickName
+						}
+					}
+				}
+			)
+	}
+
 	private fun setEditProfileButtonListener() = with(binding) {
 		profileImageView.setOnClickListener {
-			if (firebaseViewModel.auth.currentUser == null) {
+			if (firebaseDBViewModel.auth.currentUser == null) {
 				return@setOnClickListener
 			}
 			val intent = Intent(requireContext(), DetailProfileActivity::class.java)

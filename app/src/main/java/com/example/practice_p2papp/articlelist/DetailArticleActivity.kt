@@ -2,14 +2,16 @@ package com.example.practice_p2papp.articlelist
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.practice_p2papp.adapter.DetailArticleViewPagerAdapter
 import com.example.practice_p2papp.databinding.ActivityDetailArticleBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.ArticleListItem
 import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
+import com.example.practice_p2papp.viewmodel.factory.FirebaseViewModelFactory
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,18 +23,17 @@ class DetailArticleActivity : AppCompatActivity() {
 
 
 	private lateinit var viewPagerAdapter: DetailArticleViewPagerAdapter
+	private val appRepository = AppRepository()
 
-
-	private lateinit var firebaseViewModel: FirebaseDBViewModel
+	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 	private lateinit var binding: ActivityDetailArticleBinding
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		firebaseViewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivityDetailArticleBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
-		if (firebaseViewModel.auth.currentUser == null) {
+		if (firebaseDBViewModel.auth.currentUser == null) {
 			return
 		}
 
@@ -53,7 +54,7 @@ class DetailArticleActivity : AppCompatActivity() {
 		setStartChatButtonListener(
 			// TODO buyerNickName 값 nickName으로 변경
 			sellerId = getArticleInfo.userId,
-			buyerNickName = firebaseViewModel.auth.currentUser!!.uid,
+			buyerNickName = firebaseDBViewModel.auth.currentUser!!.uid,
 			sellerNickName = getArticleInfo.nickName,
 			buyerProfileImage = getArticleInfo.userProfileImage,
 			currentTime = getArticleInfo.date,
@@ -108,11 +109,11 @@ class DetailArticleActivity : AppCompatActivity() {
 	) = with(binding) {
 
 		chatButton.setOnClickListener {
-			if (firebaseViewModel.auth.currentUser == null) {
+			if (firebaseDBViewModel.auth.currentUser == null) {
 				return@setOnClickListener
 			}
 
-			firebaseViewModel.uploadChatListInfoInDB(
+			firebaseDBViewModel.uploadChatListInfoInDB(
 				sellerId = sellerId,
 				buyerNickName = buyerNickName,
 				sellerNickName = sellerNickName,

@@ -8,9 +8,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
 import com.example.practice_p2papp.StartActivity
@@ -19,6 +20,8 @@ import com.example.practice_p2papp.databinding.ActivityDetailProfileBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.item.UserItem
 import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
+import com.example.practice_p2papp.viewmodel.factory.FirebaseViewModelFactory
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -31,44 +34,24 @@ class DetailProfileActivity : PermissionActivity() {
 	private var loadListenerImage: String? = null
 	private var captureImageUri: Uri? = null
 
-	// 특정 child 값 받아오는 로직 필요
-	private val loadListener = object : ChildEventListener {
-
-		override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-			val model = snapshot.getValue(UserItem::class.java)
-			model ?: return
-
-			// UID 검증해서 특정 Child값 받아옴
-			if (firebaseViewModel.auth.currentUser!!.uid == model.userId) {
-				binding.nickNameTextView.text = model.nickName
-				binding.profileImageView.circleCropImage(model.imageUrl!!)
-				loadListenerImage = model.imageUrl
-			}
-
-		}
-
-		override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-		override fun onChildRemoved(snapshot: DataSnapshot) {}
-		override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-		override fun onCancelled(error: DatabaseError) {}
-	}
-
 
 	private lateinit var binding: ActivityDetailProfileBinding
-	private lateinit var firebaseViewModel : FirebaseDBViewModel
+	private val appRepository = AppRepository()
+
+	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel> {
+		FirebaseViewModelFactory(
+			appRepository
+		)
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		binding = ActivityDetailProfileBinding.inflate(layoutInflater)
-		firebaseViewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-
-		firebaseViewModel.userDB.child(DB_USER_INFO)
-			.addChildEventListener(loadListener)
 		binding.nickNameTextView.isVisible = true
 
-
+		userInfoObserve()
 		setSignOutButtonListener()
 		initNickName()
 		editNickName()
@@ -76,24 +59,39 @@ class DetailProfileActivity : PermissionActivity() {
 
 	}
 
+	// UserInfo Read
+	private fun userInfoObserve() {
+		firebaseDBViewModel.userInfoLiveData
+			.observe(
+				this,
+				Observer {
+					it.forEach { userItem ->
+						// 특정 child 값 받아오는 로직 필요
+						if (firebaseDBViewModel.auth.currentUser!!.uid == userItem.userId) {
+							binding.nickNameTextView.text = userItem.nickName
+							binding.profileImageView.circleCropImage(userItem.imageUrl!!)
+							loadListenerImage = userItem.imageUrl
+						}
+					}
+				}
+			)
+	}
+
 
 	private fun setSignOutButtonListener() = with(binding) {
 		signOutButton.setOnClickListener {
-			if (firebaseViewModel.auth.currentUser == null) {
+			if (firebaseDBViewModel.auth.currentUser == null) {
 				Toast.makeText(this@DetailProfileActivity, "로그인을 다시 해주세요.", Toast.LENGTH_SHORT)
 					.show()
 				return@setOnClickListener
 			}
-			firebaseViewModel.auth.signOut()
+			firebaseDBViewModel.auth.signOut()
 			Toast.makeText(this@DetailProfileActivity, "로그아웃 했습니다", Toast.LENGTH_SHORT).show()
 			startActivity(Intent(this@DetailProfileActivity, StartActivity::class.java))
 			//모든 Acivity 경로 지우기
 			ActivityCompat.finishAffinity(this@DetailProfileActivity)
 		}
 	}
-
-
-
 
 
 	private fun initNickName() = with(binding) {
@@ -108,7 +106,7 @@ class DetailProfileActivity : PermissionActivity() {
 
 	private fun editNickName() = with(binding) {
 		submitButton.setOnClickListener {
-			if (firebaseViewModel.auth.currentUser == null) {
+			if (firebaseDBViewModel.auth.currentUser == null) {
 				return@setOnClickListener
 			}
 
@@ -124,14 +122,14 @@ class DetailProfileActivity : PermissionActivity() {
 			// 이미지 변경이 있으면 변경된 이미지 저장. 없으면 원래 불러왔던 이미지 저장
 			if (editImageUrl != null) {
 				editProfileAndUpdateDB(
-					userId = firebaseViewModel.auth.currentUser!!.uid,
+					userId = firebaseDBViewModel.auth.currentUser!!.uid,
 					nickName = nickNameEditText.text.toString(),
 					imageUrl = editImageUrl
 				)
 				editImageUrl = null
 			} else {
 				editProfileAndUpdateDB(
-					userId = firebaseViewModel.auth.currentUser!!.uid,
+					userId = firebaseDBViewModel.auth.currentUser!!.uid,
 					nickName = nickNameEditText.text.toString(),
 					imageUrl = loadListenerImage
 				)
@@ -148,7 +146,7 @@ class DetailProfileActivity : PermissionActivity() {
 
 	// 프로필 업데이트 후 데이터 교체
 	private fun editProfileAndUpdateDB(userId: String, nickName: String, imageUrl: String?) {
-		val key = firebaseViewModel.userDB.child(userId).key
+		val key = firebaseDBViewModel.userDB.child(userId).key
 		if (key == null) {
 			Toast.makeText(this, "수정에 실패 했습니다.", Toast.LENGTH_SHORT).show()
 			return
@@ -189,7 +187,7 @@ class DetailProfileActivity : PermissionActivity() {
 
 	private fun openCamera() {
 		val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-		createImageUri(firebaseViewModel.newFileName(), "image/*").let { uri ->
+		createImageUri(firebaseDBViewModel.newFileName(), "image/*").let { uri ->
 			captureImageUri = uri
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, captureImageUri)
 			startActivityForResult(intent, CAMERA_RESULT_CODE)
@@ -235,13 +233,15 @@ class DetailProfileActivity : PermissionActivity() {
 						notNullData -> {
 							lifecycleScope.launch {
 								showProgress()
-								val urlResult = firebaseViewModel.imageStorageUpload(intent.data!!)
+								val urlResult =
+									firebaseDBViewModel.imageStorageUpload(intent.data!!)
 								binding.profileImageView.circleCropImage(urlResult)
 								editImageUrl = urlResult
 								hideProgress()
 							}
 						}
-						else -> {}
+						else -> {
+						}
 					}
 				}
 
@@ -252,7 +252,7 @@ class DetailProfileActivity : PermissionActivity() {
 				captureImageUri?.let { uri ->
 					lifecycleScope.launch {
 						showProgress()
-						val urlResult = firebaseViewModel.imageStorageUpload(uri)
+						val urlResult = firebaseDBViewModel.imageStorageUpload(uri)
 						binding.profileImageView.circleCropImage(urlResult)
 						editImageUrl = urlResult
 						hideProgress()

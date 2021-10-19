@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,8 @@ import com.example.practice_p2papp.abstracts.PermissionActivity
 import com.example.practice_p2papp.databinding.ActivitySignInBinding
 import com.example.practice_p2papp.extensions.circleCropImage
 import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
+import com.example.practice_p2papp.viewmodel.factory.FirebaseViewModelFactory
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 import kotlinx.coroutines.*
 
 // 세부정보 기입 후 관리
@@ -24,13 +27,13 @@ class SignInActivity : PermissionActivity() {
 	private var storageUrlResult: String? = null
 
 	private var captureImageUri: Uri? = null
+	private val appRepository = AppRepository()
 
-	private lateinit var viewModel: FirebaseDBViewModel
+	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 
 	private lateinit var binding: ActivitySignInBinding
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivitySignInBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
@@ -53,7 +56,7 @@ class SignInActivity : PermissionActivity() {
 
 	private fun openCamera() {
 		val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-		createImageUri(viewModel.newFileName(), "image/*").let { uri ->
+		createImageUri(firebaseDBViewModel.newFileName(), "image/*").let { uri ->
 			captureImageUri = uri
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, captureImageUri)
 			startActivityForResult(intent, CAMERA_RESULT_CODE)
@@ -99,7 +102,7 @@ class SignInActivity : PermissionActivity() {
 						notNullData -> {
 							lifecycleScope.launch {
 								showProgress()
-								storageUrlResult = viewModel.imageStorageUpload(intent.data!!)
+								storageUrlResult = firebaseDBViewModel.imageStorageUpload(intent.data!!)
 								binding.profileImageView.circleCropImage(storageUrlResult!!)
 								hideProgress()
 							}
@@ -115,7 +118,7 @@ class SignInActivity : PermissionActivity() {
 				captureImageUri?.let { uri ->
 					lifecycleScope.launch {
 						showProgress()
-						storageUrlResult = viewModel.imageStorageUpload(uri)
+						storageUrlResult = firebaseDBViewModel.imageStorageUpload(uri)
 						binding.profileImageView.circleCropImage(storageUrlResult!!)
 						hideProgress()
 					}
@@ -175,7 +178,7 @@ class SignInActivity : PermissionActivity() {
 		signUpButton.setOnClickListener {
 
 			// 예외처리
-			if (viewModel.auth.currentUser == null) { // 회원 목록에 없다면
+			if (firebaseDBViewModel.auth.currentUser == null) { // 회원 목록에 없다면
 				Toast.makeText(
 					this@SignInActivity,
 					"회원가입 정보가 저장되지 않았습니다. 다시 가입해주세요",
@@ -191,14 +194,14 @@ class SignInActivity : PermissionActivity() {
 				}
 
 				val nickName = nickNameEditText.text.toString()
-				val userId = viewModel.auth.currentUser!!.uid
+				val userId = firebaseDBViewModel.auth.currentUser!!.uid
 
 				lifecycleScope.launch {
 					if (storageUrlResult == null) {
 						binding.imageViewEmptyCheck.isVisible = true
 						return@launch
 					}
-					viewModel.uploadUserInfo(
+					firebaseDBViewModel.uploadUserInfo(
 						userId = userId,
 						nickName = nickName,
 						imageUrl = storageUrlResult!!

@@ -10,6 +10,7 @@ import com.example.practice_p2papp.item.ArticleListItem
 import com.example.practice_p2papp.item.ChatRoomItem
 import com.example.practice_p2papp.item.ChatRoomListItem
 import com.example.practice_p2papp.item.UserItem
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -22,7 +23,7 @@ import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 
 // Firebase Auth, Storage, DB 업로드, 다운로드관련 비즈니스 로직
-class FirebaseDBViewModel : ViewModel() {
+class FirebaseDBViewModel(private val repository: AppRepository) : ViewModel() {
 
 	val auth: FirebaseAuth by lazy {
 		Firebase.auth
@@ -112,12 +113,14 @@ class FirebaseDBViewModel : ViewModel() {
 	// 회원 정보 DB 업로드
 	suspend fun uploadUserInfo(userId: String, nickName: String, imageUrl: String) =
 		withContext(Dispatchers.IO) {
-
 			viewModelScope.launch {
 				val model = UserItem(userId = userId, nickName = nickName, imageUrl = imageUrl)
 				userDB.child(FirebaseKey.DB_USER_INFO).child(userId).setValue(model)
 			}
 		}
+
+	// UserInfo Read
+	val userInfoLiveData = repository.getUserProfileData()
 
 
 	// 아이템 등록할때 선택한 이미지를 Storage 저장

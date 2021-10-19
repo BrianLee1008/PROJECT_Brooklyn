@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.practice_p2papp.FirebaseKey
@@ -17,6 +19,8 @@ import com.example.practice_p2papp.databinding.FragmentChatlistBinding
 import com.example.practice_p2papp.item.ChatRoomItem
 import com.example.practice_p2papp.item.ChatRoomListItem
 import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
+import com.example.practice_p2papp.viewmodel.factory.FirebaseViewModelFactory
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -32,13 +36,14 @@ class ChatListFragment : Fragment() {
 		get() = _binding!!
 
 
-	private lateinit var firebaseViewModel : FirebaseDBViewModel
+	private val appRepository = AppRepository()
+
+	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		firebaseViewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		_binding = FragmentChatlistBinding.inflate(inflater, container, false)
 		return binding.root
 	}
@@ -89,11 +94,11 @@ class ChatListFragment : Fragment() {
 
 	@SuppressLint("NotifyDataSetChanged")
 	private fun initChatList() {
-		if(firebaseViewModel.auth.currentUser == null){
+		if(firebaseDBViewModel.auth.currentUser == null){
 			return
 		}
 
-		firebaseViewModel.chatDB.child(FirebaseKey.DB_CHAT).addListenerForSingleValueEvent(object : ValueEventListener {
+		firebaseDBViewModel.chatDB.child(FirebaseKey.DB_CHAT).addListenerForSingleValueEvent(object : ValueEventListener {
 
 			override fun onDataChange(snapshot: DataSnapshot) {
 				snapshot.children.forEach {
@@ -101,8 +106,8 @@ class ChatListFragment : Fragment() {
 					model ?: return
 
 					// co DetailArticleActivity에서 sellerID, articleTitle 데이터 가져와야함. 검증에 필요 (똑같은 채팅방 중복 생성 방지)
-					if(firebaseViewModel.auth.currentUser!!.uid != model.sellerId &&
-						firebaseViewModel.auth.currentUser!!.uid != model.buyerNickName){
+					if(firebaseDBViewModel.auth.currentUser!!.uid != model.sellerId &&
+						firebaseDBViewModel.auth.currentUser!!.uid != model.buyerNickName){
 						return@forEach
 					}
 					chatList.add(model)

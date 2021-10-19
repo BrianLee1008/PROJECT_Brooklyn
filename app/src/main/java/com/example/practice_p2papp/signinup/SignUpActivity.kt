@@ -3,21 +3,24 @@ package com.example.practice_p2papp.signinup
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.practice_p2papp.databinding.ActivitySignUpBinding
 import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
+import com.example.practice_p2papp.viewmodel.factory.FirebaseViewModelFactory
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 
 //회원가입
 class SignUpActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivitySignUpBinding
-	private lateinit var viewModel : FirebaseDBViewModel
+	private val appRepository = AppRepository()
 
+	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivitySignUpBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
@@ -70,7 +73,7 @@ class SignUpActivity : AppCompatActivity() {
 			val email = emailEditText.text.toString()
 			val password = passwordCheckEditText.text.toString()
 
-			viewModel.auth.createUserWithEmailAndPassword(email, password)
+			firebaseDBViewModel.auth.createUserWithEmailAndPassword(email, password)
 				.addOnCompleteListener { task ->
 					if (task.isSuccessful) {
 						Toast.makeText(this@SignUpActivity, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT)

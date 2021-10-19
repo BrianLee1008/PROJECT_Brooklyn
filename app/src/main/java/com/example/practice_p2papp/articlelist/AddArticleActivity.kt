@@ -9,8 +9,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.practice_p2papp.FirebaseKey.Companion.DB_USER_INFO
 import com.example.practice_p2papp.abstracts.PermissionActivity
@@ -18,6 +18,8 @@ import com.example.practice_p2papp.adapter.PhotoAdapter
 import com.example.practice_p2papp.databinding.ActivityAddArticleBinding
 import com.example.practice_p2papp.item.UserItem
 import com.example.practice_p2papp.viewmodel.FirebaseDBViewModel
+import com.example.practice_p2papp.viewmodel.factory.FirebaseViewModelFactory
+import com.example.practice_p2papp.viewmodel.repository.AppRepository
 import com.google.firebase.database.*
 import kotlinx.coroutines.*
 
@@ -37,7 +39,7 @@ class AddArticleActivity : PermissionActivity() {
 			val model = snapshot.getValue(UserItem::class.java)
 			model ?: return
 
-			if (viewModel.auth.currentUser!!.uid == model.userId) {
+			if (firebaseDBViewModel.auth.currentUser!!.uid == model.userId) {
 				userProfileImage = model.imageUrl
 				userNickName = model.nickName
 			}
@@ -50,17 +52,18 @@ class AddArticleActivity : PermissionActivity() {
 
 	}
 
-	private lateinit var viewModel: FirebaseDBViewModel
+	private val appRepository = AppRepository()
+
+	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 	private lateinit var binding: ActivityAddArticleBinding
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		viewModel = ViewModelProvider(this)[FirebaseDBViewModel::class.java]
 		binding = ActivityAddArticleBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
 		// userDB에서 nickName 가져온다.
-		viewModel.userDB.child(DB_USER_INFO).addChildEventListener(listener)
+		firebaseDBViewModel.userDB.child(DB_USER_INFO).addChildEventListener(listener)
 
 		initAdapterAndOnClickListener()
 		initRecyclerView()
@@ -87,11 +90,11 @@ class AddArticleActivity : PermissionActivity() {
 	// DB에 항목 업로드, userId, nickName, title, content, price, date, imageUriList
 	private fun setSubmitButtonListener() = with(binding) {
 		submitButton.setOnClickListener {
-			if (viewModel.auth.currentUser == null) {
+			if (firebaseDBViewModel.auth.currentUser == null) {
 				return@setOnClickListener
 			}
 
-			val userId = viewModel.auth.currentUser?.uid.toString()
+			val userId = firebaseDBViewModel.auth.currentUser?.uid.toString()
 			val nickName = userNickName!!
 			val title = titleEditText.text.toString()
 			val content = contentEditText.text.toString()
@@ -104,8 +107,8 @@ class AddArticleActivity : PermissionActivity() {
 			// imageUrlList가 있을 떄와 없을떄로 나누어짐
 			if (imageUriList.isNotEmpty()) {
 				lifecycleScope.launch {
-					val results = viewModel.articleImageStorageUpload(imageUriList)
-					viewModel.uploadArticlesInDB(
+					val results = firebaseDBViewModel.articleImageStorageUpload(imageUriList)
+					firebaseDBViewModel.uploadArticlesInDB(
 						userId = userId,
 						nickName = nickName,
 						title = title,
@@ -121,7 +124,7 @@ class AddArticleActivity : PermissionActivity() {
 
 			} else {
 				lifecycleScope.launch {
-					viewModel.uploadArticlesInDB(
+					firebaseDBViewModel.uploadArticlesInDB(
 						userId = userId,
 						nickName = nickName,
 						title = title,
@@ -179,7 +182,7 @@ class AddArticleActivity : PermissionActivity() {
 
 	private fun openCamera() {
 		val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-		createImageUri(viewModel.newFileName(), "image/*").let { uri ->
+		createImageUri(firebaseDBViewModel.newFileName(), "image/*").let { uri ->
 			captureImageUri = uri
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, captureImageUri)
 			startActivityForResult(intent, CAMERA_RESULT_CODE)
@@ -223,7 +226,7 @@ class AddArticleActivity : PermissionActivity() {
 			GALLERY_RESULT_CODE -> {
 
 				data?.let { intent ->
-					viewModel.galleryResult(intent = intent, uriList = uriList)
+					firebaseDBViewModel.galleryResult(intent = intent, uriList = uriList)
 
 					imageUriList.addAll(uriList)
 					photoAdapter.setPhotoList(imageUriList)
@@ -233,7 +236,7 @@ class AddArticleActivity : PermissionActivity() {
 			CAMERA_RESULT_CODE -> {
 
 				captureImageUri?.let { uri ->
-					viewModel.cameraResult(uriList = uriList, uri = uri)
+					firebaseDBViewModel.cameraResult(uriList = uriList, uri = uri)
 					captureImageUri = null
 				}
 				imageUriList.addAll(uriList)
