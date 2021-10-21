@@ -1,121 +1,33 @@
 {
   "project_info": {
-    "project_number": "872259505728",
-    "firebase_url": "https://test-p2papp-01-default-rtdb.firebaseio.com",
-    "project_id": "test-p2papp-01",
-    "storage_bucket": "test-p2papp-01.appspot.com"
+    "project_number": "550940001015",
+    "project_id": "project-brooklyn-76161",
+    "storage_bucket": "project-brooklyn-76161.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:872259505728:android:fe26953933bc571811d9a5",
+        "mobilesdk_app_id": "1:550940001015:android:3137b259562e3d725489f2",
         "android_client_info": {
           "package_name": "com.example.practice_p2papp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
+          "client_id": "550940001015-9qf74cq46sgiu0q4lapb6c9epaqint88.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBlqwGzMb9BGQbhXlMBTLtX4jxCNMgGabs"
+          "current_key": "AIzaSyA_mS_zramcxcYfCXCeuMN3mrRNCpZRhaU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:872259505728:android:b1cb7adca9b16f7c11d9a5",
-        "android_client_info": {
-          "package_name": "com.example.test_p2papp_01"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBlqwGzMb9BGQbhXlMBTLtX4jxCNMgGabs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:872259505728:android:221e268273ebd23d11d9a5",
-        "android_client_info": {
-          "package_name": "com.example.test_p2papp_02"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBlqwGzMb9BGQbhXlMBTLtX4jxCNMgGabs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:872259505728:android:c0e787ea7dafc64b11d9a5",
-        "android_client_info": {
-          "package_name": "com.example.test_p2papp_03"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBlqwGzMb9BGQbhXlMBTLtX4jxCNMgGabs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "872259505728-756s2avm2sbudbaen9jgl1neud61j5vd.apps.googleusercontent.com",
+              "client_id": "550940001015-9qf74cq46sgiu0q4lapb6c9epaqint88.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
