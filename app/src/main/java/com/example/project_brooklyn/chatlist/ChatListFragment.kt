@@ -14,10 +14,9 @@ import com.example.project_brooklyn.adapter.ChatListAdapter
 import com.example.project_brooklyn.chatroom.ChatRoomActivity
 import com.example.project_brooklyn.databinding.FragmentChatlistBinding
 import com.example.project_brooklyn.item.ChatRoomItem
-import com.example.project_brooklyn.item.ChatRoomListItem
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 
 class ChatListFragment : Fragment() {
 
@@ -28,7 +27,7 @@ class ChatListFragment : Fragment() {
 		get() = _binding!!
 
 
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel> {
 		FirebaseViewModelFactory(

@@ -17,7 +17,7 @@ import com.example.project_brooklyn.databinding.ActivitySignInBinding
 import com.example.project_brooklyn.extensions.circleCropImage
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 import kotlinx.coroutines.*
 
 // 세부정보 기입 후 관리
@@ -26,7 +26,7 @@ class SignInActivity : PermissionActivity() {
 	private var storageUrlResult: String? = null
 
 	private var captureImageUri: Uri? = null
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 

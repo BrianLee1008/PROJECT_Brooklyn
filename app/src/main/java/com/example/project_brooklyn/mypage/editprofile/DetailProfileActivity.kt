@@ -20,7 +20,7 @@ import com.example.project_brooklyn.extensions.circleCropImage
 import com.example.project_brooklyn.item.UserItem
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -35,7 +35,7 @@ class DetailProfileActivity : PermissionActivity() {
 
 
 	private lateinit var binding: ActivityDetailProfileBinding
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel> {
 		FirebaseViewModelFactory(

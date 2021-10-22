@@ -9,13 +9,13 @@ import androidx.core.view.isVisible
 import com.example.project_brooklyn.databinding.ActivitySignUpBinding
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 
 //회원가입
 class SignUpActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivitySignUpBinding
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 	override fun onCreate(savedInstanceState: Bundle?) {

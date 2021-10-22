@@ -16,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 // co read만 우선.. create, update 나중에
 
 // FirebaseDB, Retrofit2 CRUD
-class AppRepository {
+class DBRepository {
 
 
 	// UserInfo Read

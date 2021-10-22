@@ -17,7 +17,7 @@
 
 
     <item
-        android:id="@+id/myPlace"
+        android:id="@+id/map"
         android:icon="@drawable/place"
         android:title="내 근처" />
 

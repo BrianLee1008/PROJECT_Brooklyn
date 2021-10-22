@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -17,6 +19,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PRACTICE_P2PApp">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_map_api_key" />
+
+
         <activity
             android:name="com.example.project_brooklyn.StartActivity"
             android:exported="true">
@@ -33,8 +41,8 @@
         <activity android:name="com.example.project_brooklyn.signinup.LoginMethodActivity" />
         <activity android:name="com.example.project_brooklyn.signinup.BrooklynEmailSignInActivity" />
         <activity android:name="com.example.project_brooklyn.mypage.editprofile.DetailProfileActivity" />
-        <activity android:name="com.example.project_brooklyn.articlelist.DetailArticleActivity"/>
-        <activity android:name="com.example.project_brooklyn.chatroom.ChatRoomActivity"/>
+        <activity android:name="com.example.project_brooklyn.articlelist.DetailArticleActivity" />
+        <activity android:name="com.example.project_brooklyn.chatroom.ChatRoomActivity" />
     </application>
 
 </manifest>

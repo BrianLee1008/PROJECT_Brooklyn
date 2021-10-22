@@ -10,13 +10,13 @@ import com.example.project_brooklyn.MainActivity
 import com.example.project_brooklyn.databinding.ActivityBrooklynEmailSignInBinding
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 
 class BrooklynEmailSignInActivity : AppCompatActivity() {
 
 
 	private lateinit var binding : ActivityBrooklynEmailSignInBinding
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 

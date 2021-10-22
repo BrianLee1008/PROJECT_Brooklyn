@@ -8,6 +8,7 @@ import com.example.project_brooklyn.articlelist.AddArticleActivity
 import com.example.project_brooklyn.articlelist.ArticleListFragment
 import com.example.project_brooklyn.chatlist.ChatListFragment
 import com.example.project_brooklyn.databinding.ActivityMainBinding
+import com.example.project_brooklyn.map.SearchMapFragment
 import com.example.project_brooklyn.mypage.MyPageFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 	private val articleFragment = ArticleListFragment()
 	private val chatRoomListFragment = ChatListFragment()
 	private val myPageFragment = MyPageFragment()
+	private val searchMapFragment = SearchMapFragment()
 
 
 	private lateinit var binding: ActivityMainBinding
@@ -50,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 				R.id.home -> replaceFragment(articleFragment)
 				R.id.chatList -> replaceFragment(chatRoomListFragment)
 				R.id.myPage -> replaceFragment(myPageFragment)
+				R.id.map -> replaceFragment(searchMapFragment)
 
 			}
 			return@setOnNavigationItemSelectedListener true

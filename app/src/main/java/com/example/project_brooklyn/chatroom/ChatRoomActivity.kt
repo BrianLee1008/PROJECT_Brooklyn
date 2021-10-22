@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_brooklyn.FirebaseKey
 import com.example.project_brooklyn.adapter.ChatRoomAdapter
@@ -12,7 +11,7 @@ import com.example.project_brooklyn.databinding.ActivityChatroomBinding
 import com.example.project_brooklyn.item.ChatRoomItem
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,7 +27,7 @@ class ChatRoomActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityChatroomBinding
 
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 	private val firebaseViewModel by viewModels<FirebaseDBViewModel>{FirebaseViewModelFactory(appRepository)}
 
 	override fun onCreate(savedInstanceState: Bundle?) {

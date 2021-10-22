@@ -16,14 +16,14 @@ import com.example.project_brooklyn.databinding.FragmentArticleListBinding
 import com.example.project_brooklyn.item.ArticleListItem
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 
 
 
 class ArticleListFragment : Fragment() {
 
 	private lateinit var articleListAdapter: ArticleListAdapter
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private var _binding: FragmentArticleListBinding? = null
 	private val binding: FragmentArticleListBinding

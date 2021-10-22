@@ -18,7 +18,7 @@ import com.example.project_brooklyn.adapter.PhotoAdapter
 import com.example.project_brooklyn.databinding.ActivityAddArticleBinding
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 import com.google.firebase.database.*
 import kotlinx.coroutines.*
 
@@ -33,7 +33,7 @@ class AddArticleActivity : PermissionActivity() {
 
 	private lateinit var photoAdapter: PhotoAdapter
 
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel> {
 		FirebaseViewModelFactory(

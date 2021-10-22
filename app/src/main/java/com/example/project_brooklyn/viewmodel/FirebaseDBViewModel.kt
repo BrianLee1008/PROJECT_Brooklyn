@@ -10,7 +10,7 @@ import com.example.project_brooklyn.item.ArticleListItem
 import com.example.project_brooklyn.item.ChatRoomItem
 import com.example.project_brooklyn.item.ChatRoomListItem
 import com.example.project_brooklyn.item.UserItem
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -23,7 +23,7 @@ import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 
 // Firebase Auth, Storage, DB 업로드, 다운로드관련 비즈니스 로직
-class FirebaseDBViewModel(private val repository: AppRepository) : ViewModel() {
+class FirebaseDBViewModel(private val repository: DBRepository) : ViewModel() {
 
 	val auth: FirebaseAuth by lazy {
 		Firebase.auth

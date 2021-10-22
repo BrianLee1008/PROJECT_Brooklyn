@@ -13,7 +13,7 @@ import com.example.project_brooklyn.extensions.circleCropImage
 import com.example.project_brooklyn.mypage.editprofile.DetailProfileActivity
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 
 // co 15 다른 아이디로 로그인해도 최초 로그인한 아이디로 로그인됨.
 //		뭐가 문제일까. 아마도 DB 최신순으로 업데이트 된 데이터를 가져와서 그런듯. 원랜 안그랬는데 뭐때문에?
@@ -31,7 +31,7 @@ class MyPageFragment : Fragment() {
 	private val binding: FragmentMypageBinding
 		get() = _binding!!
 
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel> {
 		FirebaseViewModelFactory(

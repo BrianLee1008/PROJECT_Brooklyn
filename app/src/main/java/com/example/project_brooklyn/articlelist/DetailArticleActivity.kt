@@ -11,7 +11,7 @@ import com.example.project_brooklyn.extensions.circleCropImage
 import com.example.project_brooklyn.item.ArticleListItem
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
 import com.example.project_brooklyn.viewmodel.factory.FirebaseViewModelFactory
-import com.example.project_brooklyn.viewmodel.repository.AppRepository
+import com.example.project_brooklyn.viewmodel.repository.DBRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ class DetailArticleActivity : AppCompatActivity() {
 
 
 	private lateinit var viewPagerAdapter: DetailArticleViewPagerAdapter
-	private val appRepository = AppRepository()
+	private val appRepository = DBRepository()
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 	private lateinit var binding: ActivityDetailArticleBinding
