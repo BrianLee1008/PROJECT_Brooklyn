@@ -6,7 +6,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/bottom_sheet_box"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:behavior_peekHeight="46dp">
+    app:behavior_fitToContents="false"
+    app:behavior_peekHeight="46dp"
+    app:behavior_expandedOffset="72dp"
+    app:behavior_halfExpandedRatio="0.36">
+
+    <!--behavior_fitToContents false 하면드래그 시 절반접힘
+        behavior_expandedOffset 끝까지 드래그 시 빈공간 얼마나 남길지
+        behavior_peekHeight 접힌상태에서 보여질 사이즈
+        behavior_halfExpandedRatio 절반반 펼쳐질 경우 얼마나 폁쳐질지-->
 
     <View
         android:id="@+id/bottomSheetLine"

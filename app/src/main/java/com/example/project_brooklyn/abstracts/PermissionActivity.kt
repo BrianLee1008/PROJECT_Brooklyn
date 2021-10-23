@@ -18,8 +18,6 @@ abstract class PermissionActivity : AppCompatActivity() {
 		const val CAMERA_REQUEST_CODE = 2001
 		const val CAMERA_RESULT_CODE = 2002
 		const val CAMERA_CODE = 2003
-		const val LOCATION_REQUEST_CODE = 3001
-
 	}
 
 	abstract fun permissionGranted(requestCode: Int)

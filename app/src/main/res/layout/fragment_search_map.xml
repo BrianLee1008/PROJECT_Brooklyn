@@ -1,22 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-            <fragment
-                android:id="@+id/mapFragment"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/search_map_box"
+        android:elevation="4dp">
 
-        <include
-            layout="@layout/map_bottom_sheet_view">
+        <TextView
+            android:id="@+id/searchTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:fontFamily="@font/wemakeprice_semibold"
+            android:gravity="center"
+            android:hint="센터, 주유소, 스토어 검색"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/mone_long_green"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </include>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/searchButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/ic_search"
+            android:backgroundTint="@color/mone_green"
+            android:paddingVertical="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/searchTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/searchTextView"
+            app:tint="@color/mone_green" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <include layout="@layout/map_bottom_sheet_view">
+
+    </include>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

@@ -20,13 +20,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PRACTICE_P2PApp">
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
 
-
         <activity
-            android:name="com.example.project_brooklyn.StartActivity"
+            android:name=".StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,15 +34,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.project_brooklyn.articlelist.AddArticleActivity" />
-        <activity android:name="com.example.project_brooklyn.MainActivity" />
-        <activity android:name="com.example.project_brooklyn.signinup.SignUpActivity" />
-        <activity android:name="com.example.project_brooklyn.signinup.SignInActivity" />
-        <activity android:name="com.example.project_brooklyn.signinup.LoginMethodActivity" />
-        <activity android:name="com.example.project_brooklyn.signinup.BrooklynEmailSignInActivity" />
-        <activity android:name="com.example.project_brooklyn.mypage.editprofile.DetailProfileActivity" />
-        <activity android:name="com.example.project_brooklyn.articlelist.DetailArticleActivity" />
-        <activity android:name="com.example.project_brooklyn.chatroom.ChatRoomActivity" />
+        <activity android:name=".articlelist.AddArticleActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".signinup.SignUpActivity" />
+        <activity android:name=".signinup.SignInActivity" />
+        <activity android:name=".signinup.LoginMethodActivity" />
+        <activity android:name=".signinup.BrooklynEmailSignInActivity" />
+        <activity android:name=".mypage.editprofile.DetailProfileActivity" />
+        <activity android:name=".articlelist.DetailArticleActivity" />
+        <activity android:name=".chatroom.ChatRoomActivity" />
+        <activity android:name=".map.SearchResultActivity"/>
+
     </application>
 
 </manifest>
