@@ -81,7 +81,9 @@ Brooklyn_App_for_Buying_and_Selling_Used_Car
     - Storage
 
 - API
-    - Naver Map API
+    - Google Map API
+    - T-Map POI API
+    - Hyundai API
 
 - ETC
     - AAC
