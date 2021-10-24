@@ -35,6 +35,8 @@ Brooklyn_App_for_Buying_and_Selling_Used_Car
     2. 단순한 기능 구현 뿐 아니라 지속적인 성능 개선(유지보수)에도 적절한 코드 Architect를 목표로 하고 있습니다.
 
     3. 감에 의지하는 코드 스타일이 아닌 여러 이론적 토대위에서 올바른 코드를 작성하는 것이 목표 입니다.
+    
+    4. 여러가지 API를 사용하는 만큼 위화감 없이 보여질 수 있도록 디자인하는 것이 목표 입니다.
 
     
 --------------------
@@ -81,7 +83,9 @@ Brooklyn_App_for_Buying_and_Selling_Used_Car
     - Storage
 
 - API
-    - Naver Map API
+    - Google Map API
+    - T-Map POI API
+    - Hyundai API
 
 - ETC
     - AAC
