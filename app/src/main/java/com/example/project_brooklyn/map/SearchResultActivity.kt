@@ -1,31 +1,38 @@
 package com.example.project_brooklyn.map
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_brooklyn.adapter.SearchResultAdapter
 import com.example.project_brooklyn.databinding.ActivitySearchResultBinding
 import com.example.project_brooklyn.item.retrofitmodel.LocationLatLngItem
 import com.example.project_brooklyn.item.retrofitmodel.SearchResultItem
 import com.example.project_brooklyn.item.retrofitmodel.retrofitData.Pois
+import com.example.project_brooklyn.map.ResultMarkerMapActivity.Companion.INTENT_KEY
 import com.example.project_brooklyn.viewmodel.POIViewModel
 import com.example.project_brooklyn.viewmodel.factory.PoiViewModelFactory
+import kotlinx.android.synthetic.main.activity_search_result.*
+import kotlinx.coroutines.*
 
 /**
- * 1. 검색화면 리사이클러뷰로 구성.
- * 2. 검색 바 누르면 이동
- * 3. 최근검색보기는 Room으로 구성
- * 4. POI데이터로 검색하고 검색데이터 받아오면 리사이클러뷰에 뿌려주기.
- * 5. 아이템에 클릭리스너 달아서 클릭하면 지도에 마커 표시
+ * 3. 최근검색보기는 Room으로 구성. 검색창 다시 클릭하면 뜨게... 프로그래스 바 추가.
  * 6. 마커 표시한 곳에 대한 정보 BottomSheet에 표시
  * */
 
 class SearchResultActivity : AppCompatActivity() {
 
 	private lateinit var adapter: SearchResultAdapter
+
+	private lateinit var dataList: List<SearchResultItem>
+
 
 	private lateinit var binding: ActivitySearchResultBinding
 
@@ -35,32 +42,52 @@ class SearchResultActivity : AppCompatActivity() {
 		binding = ActivitySearchResultBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
+		initSearchViews()
 		initAdapterAndItemClickListener()
-		initRecyclerView()
+		initSearchBar()
 		getSearchPoiResult()
+		initRecyclerView()
 	}
+
+	private fun initSearchViews() {
+		binding.searchResultButton.isVisible = false
+		binding.searchResultRecyclerView.isVisible = false
+	}
+
 
 	private fun initAdapterAndItemClickListener() {
-		adapter = SearchResultAdapter{
-			Toast.makeText(this, "위도 : ${it.locationLatLngItem.latitude} // 경도 : ${it.locationLatLngItem.longitude}", Toast.LENGTH_SHORT).show()
-		}
-		// todo 클릭리스너
-	}
+		adapter = SearchResultAdapter {
+			val data = SearchResultItem(
+				locationName = it.locationName ?: "건물명 없음",
+				fullAddress = it.fullAddress,
+				locationLatLngItem = LocationLatLngItem(
+					// 좌표값 명시
+					latitude = it.locationLatLngItem.latitude,
+					longitude = it.locationLatLngItem.longitude
+				)
+			)
+			Toast.makeText(this@SearchResultActivity, it.locationName, Toast.LENGTH_SHORT).show()
 
-	private fun initRecyclerView() = with(binding) {
-		recentSearchRecyclerView.adapter = adapter
-		recentSearchRecyclerView.layoutManager = LinearLayoutManager(this@SearchResultActivity)
+			val intent = Intent(this, ResultMarkerMapActivity::class.java).apply {
+				putExtra(INTENT_KEY, it)
+			}
+			startActivity(intent)
+			finish()
+		}
 	}
 
 	// 키워드 입력
 	private fun getSearchPoiResult() = with(binding) {
-		searchImageView.setOnClickListener {
-			viewModel.getSearchPoiResult(searchEditText.text.toString())
+		searchEditText.setOnKeyListener { v, keyCode, event ->
+			if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
+				viewModel.getSearchPoiResult(searchEditText.text.toString())
 
-			getSearchResult()
+				getSearchResult()
+				return@setOnKeyListener true
+			}
+			return@setOnKeyListener false
+
 		}
-
-
 	}
 
 	// Poi에서 받는 데이터 SearchResponseItem에 대입
@@ -72,28 +99,46 @@ class SearchResultActivity : AppCompatActivity() {
 					if (it.isSuccessful.not()) {
 						Toast.makeText(this@SearchResultActivity, "레트로핏 통신 실패", Toast.LENGTH_SHORT)
 							.show()
-						Log.d("retrofitTest",it.body().toString())
+						Log.d("retrofitTest", it.body().toString())
 						return@observe
 					}
 					it.body()?.let { searchResponse ->
-						setMockingData(searchResponse.searchPoiInfo.pois)
+						setSearchResultItem(searchResponse.searchPoiInfo.pois)
 					}
 
-				} catch (e:Exception){
+				} catch (e: Exception) {
 					e.printStackTrace()
-					Toast.makeText(this@SearchResultActivity, "검색이 제대로 되지 않았습니다.", Toast.LENGTH_SHORT).show()
+					Toast.makeText(
+						this@SearchResultActivity,
+						"검색이 제대로 되지 않았습니다.",
+						Toast.LENGTH_SHORT
+					).show()
 				}
 
 			}
 		)
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
+	private fun initSearchBar() = with(binding) {
+		searchEditText.setOnTouchListener { v, motionEvent ->
+			if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+				searchResultButton.isVisible = false
+				searchResultRecyclerView.isVisible = false
+				recentSearchButton.isVisible = true
+				recentSearchRecyclerView.isVisible = true
+			}
+			return@setOnTouchListener false
+		}
 
-	private fun setMockingData(pois: Pois) {
-		val dataList = pois.poi.map {
+	}
+
+
+	private fun setSearchResultItem(pois: Pois) = with(binding) {
+		dataList = pois.poi.map {
 			SearchResultItem(
-				locationName = "건물 : ${it.name ?: "건물명 없음"}",
-				fullAddress = "주소 : ${it.roadName}",
+				locationName = it.name ?: "건물명 없음",
+				fullAddress = it.roadName.toString(),
 				locationLatLngItem = LocationLatLngItem(
 					// 좌표값 명시
 					latitude = it.noorLat,
@@ -101,7 +146,17 @@ class SearchResultActivity : AppCompatActivity() {
 				)
 			)
 		}
+		searchResultButton.isVisible = true
+		searchResultRecyclerView.isVisible = true
+		recentSearchButton.isVisible = false
+		recentSearchRecyclerView.isVisible = false
+
 		adapter.submitList(dataList)
+	}
+
+	private fun initRecyclerView() = with(binding) {
+		searchResultRecyclerView.adapter = adapter
+		searchResultRecyclerView.layoutManager = LinearLayoutManager(this@SearchResultActivity)
 	}
 
 }

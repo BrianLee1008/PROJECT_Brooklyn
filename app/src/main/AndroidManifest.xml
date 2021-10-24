@@ -44,6 +44,7 @@
         <activity android:name=".articlelist.DetailArticleActivity" />
         <activity android:name=".chatroom.ChatRoomActivity" />
         <activity android:name=".map.SearchResultActivity"/>
+        <activity android:name=".map.ResultMarkerMapActivity"/>
 
     </application>
 

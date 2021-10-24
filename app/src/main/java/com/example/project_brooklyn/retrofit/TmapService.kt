@@ -2,7 +2,6 @@ package com.example.project_brooklyn.retrofit
 
 import com.example.project_brooklyn.item.retrofitmodel.retrofitData.SearchResponse
 import com.example.project_brooklyn.retrofit.utility.RetrofitUrl
-import com.example.project_brooklyn.retrofit.utility.RetrofitUtility
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

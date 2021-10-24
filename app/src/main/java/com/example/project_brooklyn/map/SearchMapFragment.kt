@@ -10,19 +10,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.project_brooklyn.R
 import com.example.project_brooklyn.databinding.FragmentSearchMapBinding
+import com.example.project_brooklyn.item.retrofitmodel.SearchResultItem
+import com.example.project_brooklyn.viewmodel.POIViewModel
+import com.example.project_brooklyn.viewmodel.factory.PoiViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 
 class SearchMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
 	GoogleMap.OnMyLocationClickListener {
 
 	private lateinit var map: GoogleMap
 	private var permissionDenied = false
+
+	private val viewModel by viewModels<POIViewModel> { PoiViewModelFactory() }
 
 	private var _binding: FragmentSearchMapBinding? = null
 	val binding: FragmentSearchMapBinding
@@ -79,6 +86,7 @@ class SearchMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocation
 		map.setOnMyLocationButtonClickListener(this)
 
 		checkPermission()
+
 	}
 
 	// 현위치 버튼 클릭 리스너
@@ -99,6 +107,9 @@ class SearchMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocation
 			startActivity(intent)
 		}
 	}
+
+
+
 
 
 	// abstract 안하고 Location Permission 직접 체크

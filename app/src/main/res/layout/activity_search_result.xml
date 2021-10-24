@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/searchImageView"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -82,26 +82,57 @@
             android:background="@drawable/sign_button"
             android:fontFamily="@font/wemakeprice_semibold"
             android:includeFontPadding="false"
-            android:text="검색결과"
+            android:text="최근검색어"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/recentSearchButtonUnderView"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/searchResultButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="12dp"
+            android:background="@drawable/sign_button"
+            android:fontFamily="@font/wemakeprice_semibold"
+            android:includeFontPadding="false"
+            android:text="검색결과"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/recentSearchButtonUnderView"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/recentSearchButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <View
             android:id="@+id/recentSearchButtonUnderView"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="50dp"
             android:background="@color/mone_little_green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recentSearchButton" />
+
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recentSearchRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/recentSearchButtonUnderView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResultRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
