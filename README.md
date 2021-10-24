@@ -21,7 +21,7 @@ Brooklyn_App_for_Buying_and_Selling_Used_Car
     Brooklyn
 
 ### - ****제작 기간**** 
-    2주
+    3주
 
 ### - ****App 간단 소개**** 
     Brooklyn은 차량에 관련한 물품을 유저끼리 거래하고, 자기 차량을 관리하는데에 도움을 주는 앱입니다.   
@@ -76,6 +76,7 @@ Brooklyn_App_for_Buying_and_Selling_Used_Car
     - Glide
     - ViewPager2
     - Retrofit2
+    - Room
 
 - Firebase
     - Authentication
