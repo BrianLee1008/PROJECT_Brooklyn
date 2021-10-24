@@ -9,8 +9,9 @@
 
     <ImageView
         android:id="@+id/mainLogoImageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:background="@drawable/logo_brooklyn"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
