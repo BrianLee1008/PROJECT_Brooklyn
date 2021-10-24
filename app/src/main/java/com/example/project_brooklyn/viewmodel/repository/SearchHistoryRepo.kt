@@ -32,9 +32,9 @@ class SearchHistoryRepo(application: Application) {
 		historyDao.insertKeyword(history)
 	}
 
-//	fun historyDelete(history: HistoryEntity){
-//		historyDao.deleteHistory(history)
-//	}
+	fun historyDelete(keyword: String){
+		historyDao.deleteHistory(keyword)
+	}
 
 
 }

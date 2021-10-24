@@ -21,7 +21,7 @@ class POIViewModel(private val repository: RetrofitRepository) : ViewModel() {
 
 	// 레트로핏 서버 통신 후 키워드 입력하면 가져오는 데이터에 LiveData 구독
 	fun getSearchPoiResult(keyword: String) {
-		viewModelScope.launch {
+		viewModelScope.launch(Dispatchers.Main) {
 			val response = repository.getSearchView(keyword)
 			_searchPoiLiveData.value = response
 		}

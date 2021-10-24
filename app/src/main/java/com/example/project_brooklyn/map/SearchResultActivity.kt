@@ -23,6 +23,7 @@ import com.example.project_brooklyn.viewmodel.SearchViewModel
 import com.example.project_brooklyn.viewmodel.factory.PoiViewModelFactory
 import com.example.project_brooklyn.viewmodel.factory.SearchViewModelFactory
 import kotlinx.android.synthetic.main.activity_search_result.*
+import kotlinx.android.synthetic.main.item_recent_search.*
 import kotlinx.coroutines.*
 
 /**
@@ -49,10 +50,10 @@ class SearchResultActivity : AppCompatActivity() {
 
 		initSearchViews()
 		recentSearchObserver()
-		initAdapterAndItemClickListener()
 		initRecentSearchRecyclerView()
-		initSearchBar()
+		initAdapterAndItemClickListener()
 		initSearchResultRecyclerView()
+		initSearchBar()
 		getSearchPoiResult()
 	}
 
@@ -73,17 +74,6 @@ class SearchResultActivity : AppCompatActivity() {
 
 	private fun initAdapterAndItemClickListener() {
 		searchResultAdapter = SearchResultAdapter {
-			val data = SearchResultItem(
-				locationName = it.locationName ?: "건물명 없음",
-				fullAddress = it.fullAddress,
-				locationLatLngItem = LocationLatLngItem(
-					// 좌표값 명시
-					latitude = it.locationLatLngItem.latitude,
-					longitude = it.locationLatLngItem.longitude
-				)
-			)
-			Toast.makeText(this@SearchResultActivity, it.locationName, Toast.LENGTH_SHORT).show()
-
 			val intent = Intent(this, ResultMarkerMapActivity::class.java).apply {
 				putExtra(INTENT_KEY, it)
 			}
@@ -172,7 +162,9 @@ class SearchResultActivity : AppCompatActivity() {
 	}
 
 	private fun initRecentSearchRecyclerView() = with(binding) {
-		recentSearchAdapter = RecentSearchAdapter()
+		recentSearchAdapter = RecentSearchAdapter {
+			setRemoveButton(it)
+		}
 		recentSearchRecyclerView.adapter = recentSearchAdapter
 		recentSearchRecyclerView.layoutManager = LinearLayoutManager(
 			this@SearchResultActivity,
@@ -183,9 +175,14 @@ class SearchResultActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun initSearchResultRecyclerView() = with(binding){
+	private fun initSearchResultRecyclerView() = with(binding) {
 		searchResultRecyclerView.adapter = searchResultAdapter
 		searchResultRecyclerView.layoutManager = LinearLayoutManager(this@SearchResultActivity)
+	}
+
+	private fun setRemoveButton(keyword: String) {
+		searchViewModel.removeHistory(keyword)
+		searchViewModel.searchHistoryLiveData
 	}
 
 }

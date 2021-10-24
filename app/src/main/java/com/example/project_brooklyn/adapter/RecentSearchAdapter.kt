@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.project_brooklyn.databinding.ItemRecentSearchBinding
 import com.example.project_brooklyn.item.room.entity.HistoryEntity
 
-class RecentSearchAdapter :
+class RecentSearchAdapter(private val onClickListener : (String) -> Unit) :
 	ListAdapter<HistoryEntity, RecentSearchAdapter.RecentSearchViewHolder>(diffUtil) {
 
 	companion object {
@@ -28,6 +28,11 @@ class RecentSearchAdapter :
 		RecyclerView.ViewHolder(binding.root) {
 			fun bind(history: HistoryEntity) = with(binding){
 				mainTitleTextView.text = history.keyword
+
+				removeButton.setOnClickListener {
+					onClickListener(history.keyword.toString())
+				}
+
 			}
 
 	}

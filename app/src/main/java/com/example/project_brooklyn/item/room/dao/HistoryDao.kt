@@ -15,6 +15,6 @@ interface HistoryDao {
 	@Insert
 	fun insertKeyword(history : HistoryEntity)
 
-//	@Query("DELETE FROM history WHERE keyword = :keyword")
-//	fun deleteHistory(keyword: HistoryEntity)
+	@Query("DELETE FROM history WHERE keyword = :keyword")
+	fun deleteHistory(keyword: String)
 }

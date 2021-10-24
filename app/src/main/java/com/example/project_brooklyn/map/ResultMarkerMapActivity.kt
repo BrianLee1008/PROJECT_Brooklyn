@@ -76,7 +76,7 @@ class ResultMarkerMapActivity : AppCompatActivity(), OnMapReadyCallback,
 
 
 		// 줌 레벨 설정
-		map.setMinZoomPreference(15f)
+		map.setMinZoomPreference(10f)
 		map.setMaxZoomPreference(23f)
 
 

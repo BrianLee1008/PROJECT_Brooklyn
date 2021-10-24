@@ -19,6 +19,14 @@ class SearchViewModel(private val searchHistoryRepo: SearchHistoryRepo) : ViewMo
 
 			searchHistoryRepo.historyInsert(data)
 		}
+	}
+
+
+	fun removeHistory(keyword: String){
+		viewModelScope.launch(Dispatchers.IO) {
+			searchHistoryRepo.historyDelete(keyword)
+		}
+
 
 	}
 
