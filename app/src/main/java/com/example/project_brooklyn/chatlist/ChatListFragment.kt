@@ -97,8 +97,6 @@ class ChatListFragment : Fragment() {
 						if (firebaseDBViewModel.auth.currentUser!!.uid != chatRoomListItem.sellerId &&
 							firebaseDBViewModel.auth.currentUser!!.uid != chatRoomListItem.buyerNickName
 						) {
-							Toast.makeText(activity, "채팅방 생성에 실패했어요. 다시 시도해주세요.", Toast.LENGTH_SHORT)
-								.show()
 							return@observe
 						}
 					}

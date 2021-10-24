@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.project_brooklyn.adapter.RecentSearchAdapter
 import com.example.project_brooklyn.adapter.SearchResultAdapter
 import com.example.project_brooklyn.databinding.ActivitySearchResultBinding
 import com.example.project_brooklyn.item.retrofitmodel.LocationLatLngItem
@@ -18,7 +19,9 @@ import com.example.project_brooklyn.item.retrofitmodel.SearchResultItem
 import com.example.project_brooklyn.item.retrofitmodel.retrofitData.Pois
 import com.example.project_brooklyn.map.ResultMarkerMapActivity.Companion.INTENT_KEY
 import com.example.project_brooklyn.viewmodel.POIViewModel
+import com.example.project_brooklyn.viewmodel.SearchViewModel
 import com.example.project_brooklyn.viewmodel.factory.PoiViewModelFactory
+import com.example.project_brooklyn.viewmodel.factory.SearchViewModelFactory
 import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.coroutines.*
 
@@ -29,7 +32,8 @@ import kotlinx.coroutines.*
 
 class SearchResultActivity : AppCompatActivity() {
 
-	private lateinit var adapter: SearchResultAdapter
+	private lateinit var searchResultAdapter: SearchResultAdapter
+	private lateinit var recentSearchAdapter: RecentSearchAdapter
 
 	private lateinit var dataList: List<SearchResultItem>
 
@@ -37,16 +41,19 @@ class SearchResultActivity : AppCompatActivity() {
 	private lateinit var binding: ActivitySearchResultBinding
 
 	private val viewModel by viewModels<POIViewModel> { PoiViewModelFactory() }
+	private val searchViewModel by viewModels<SearchViewModel> { SearchViewModelFactory(application) }
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivitySearchResultBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
 		initSearchViews()
+		recentSearchObserver()
 		initAdapterAndItemClickListener()
+		initRecentSearchRecyclerView()
 		initSearchBar()
+		initSearchResultRecyclerView()
 		getSearchPoiResult()
-		initRecyclerView()
 	}
 
 	private fun initSearchViews() {
@@ -54,9 +61,18 @@ class SearchResultActivity : AppCompatActivity() {
 		binding.searchResultRecyclerView.isVisible = false
 	}
 
+	private fun recentSearchObserver() {
+		searchViewModel.searchHistoryLiveData.observe(
+			this,
+			{
+				recentSearchAdapter.submitList(it)
+			}
+		)
+	}
+
 
 	private fun initAdapterAndItemClickListener() {
-		adapter = SearchResultAdapter {
+		searchResultAdapter = SearchResultAdapter {
 			val data = SearchResultItem(
 				locationName = it.locationName ?: "건물명 없음",
 				fullAddress = it.fullAddress,
@@ -81,6 +97,7 @@ class SearchResultActivity : AppCompatActivity() {
 		searchEditText.setOnKeyListener { v, keyCode, event ->
 			if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == MotionEvent.ACTION_DOWN) {
 				viewModel.getSearchPoiResult(searchEditText.text.toString())
+				searchViewModel.insertKeyword(searchEditText.text.toString())
 
 				getSearchResult()
 				return@setOnKeyListener true
@@ -151,11 +168,23 @@ class SearchResultActivity : AppCompatActivity() {
 		recentSearchButton.isVisible = false
 		recentSearchRecyclerView.isVisible = false
 
-		adapter.submitList(dataList)
+		searchResultAdapter.submitList(dataList)
 	}
 
-	private fun initRecyclerView() = with(binding) {
-		searchResultRecyclerView.adapter = adapter
+	private fun initRecentSearchRecyclerView() = with(binding) {
+		recentSearchAdapter = RecentSearchAdapter()
+		recentSearchRecyclerView.adapter = recentSearchAdapter
+		recentSearchRecyclerView.layoutManager = LinearLayoutManager(
+			this@SearchResultActivity,
+			LinearLayoutManager.VERTICAL,
+			true
+		).apply {
+			stackFromEnd = true
+		}
+	}
+
+	private fun initSearchResultRecyclerView() = with(binding){
+		searchResultRecyclerView.adapter = searchResultAdapter
 		searchResultRecyclerView.layoutManager = LinearLayoutManager(this@SearchResultActivity)
 	}
 

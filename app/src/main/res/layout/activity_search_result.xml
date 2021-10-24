@@ -124,7 +124,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/black"
             app:layout_constraintTop_toBottomOf="@id/recentSearchButtonUnderView" />
 
         <androidx.recyclerview.widget.RecyclerView
