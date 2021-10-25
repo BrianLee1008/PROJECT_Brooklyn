@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,6 +25,7 @@ class DetailArticleActivity : AppCompatActivity() {
 
 	private lateinit var viewPagerAdapter: DetailArticleViewPagerAdapter
 	private val appRepository = DBRepository()
+	private lateinit var getArticleInfo :ArticleListItem
 
 	private val firebaseDBViewModel by viewModels<FirebaseDBViewModel>{ FirebaseViewModelFactory(appRepository) }
 	private lateinit var binding: ActivityDetailArticleBinding
@@ -37,7 +39,9 @@ class DetailArticleActivity : AppCompatActivity() {
 			return
 		}
 
-		val getArticleInfo = intent.getSerializableExtra("path") as ArticleListItem
+		intent?.let {
+			getArticleInfo = it.getSerializableExtra(ARTICLE_INFO_KEY) as ArticleListItem
+		}
 
 		lifecycleScope.launch {
 			initViews(
@@ -132,6 +136,10 @@ class DetailArticleActivity : AppCompatActivity() {
 
 		}
 
+	}
+
+	companion object{
+		const val ARTICLE_INFO_KEY = "path"
 	}
 
 

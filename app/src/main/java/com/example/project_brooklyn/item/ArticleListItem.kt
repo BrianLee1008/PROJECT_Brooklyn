@@ -1,7 +1,10 @@
 package com.example.project_brooklyn.item
 
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
+
 
 data class ArticleListItem(
 	val userId: String,

@@ -27,6 +27,7 @@ class ArticleListAdapter(val onClickListener: (ArticleListItem) -> Unit) :
 			val date = Date(articleListItem.date)
 			dateTextView.text = format.format(date).toString()
 
+			// xo 이미지는 들어가는데 노출이 안되는 이 기이한 현상을 보라... 앱을 삭제했다 다시 깔면 처음 이미지 빼고 오류 뜨는 것으로 보임
 			if (articleListItem.imageUriList.isNotEmpty()) {
 				thumbnailImageView.loadThumbnailImage(articleListItem.imageUriList, 8f)
 			}

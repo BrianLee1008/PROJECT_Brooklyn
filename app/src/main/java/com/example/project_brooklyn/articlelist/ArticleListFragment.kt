@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_brooklyn.adapter.ArticleListAdapter
+import com.example.project_brooklyn.articlelist.DetailArticleActivity.Companion.ARTICLE_INFO_KEY
 import com.example.project_brooklyn.databinding.FragmentArticleListBinding
 import com.example.project_brooklyn.item.ArticleListItem
 import com.example.project_brooklyn.viewmodel.FirebaseDBViewModel
@@ -63,7 +64,9 @@ class ArticleListFragment : Fragment() {
 			.observe(
 				viewLifecycleOwner,
 				{
+					it.map {
 
+					}
 					// ForEach가 문제였네... 하나하나 꺼내서 넣어주니까 중복이 생길수밖에 없지
 					articleListAdapter.submitList(it)
 					articleListAdapter.notifyDataSetChanged()
@@ -95,7 +98,7 @@ class ArticleListFragment : Fragment() {
 					)
 					// 데이터 가지고 상세페이지 이동
 					val intent = Intent(activity, DetailArticleActivity::class.java)
-					intent.putExtra("path", articleInfo)
+					intent.putExtra(ARTICLE_INFO_KEY, articleInfo)
 					startActivity(intent)
 
 

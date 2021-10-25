@@ -61,13 +61,13 @@ class AddArticleActivity : PermissionActivity() {
 			.observe(
 				this,
 				Observer {
-					it.forEach { userItem ->
-						if (firebaseDBViewModel.auth.currentUser!!.uid != userItem.userId) {
-
-							return@Observer
+					it.map { userItem ->
+						if (firebaseDBViewModel.auth.currentUser!!.uid == userItem.userId) {
+							userProfileImage = userItem.imageUrl
+							userNickName = userItem.nickName
 						}
-						userProfileImage = userItem.imageUrl
-						userNickName = userItem.nickName
+
+
 					}
 				}
 			)

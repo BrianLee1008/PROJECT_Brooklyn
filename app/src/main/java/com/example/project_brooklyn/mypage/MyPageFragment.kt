@@ -68,7 +68,7 @@ class MyPageFragment : Fragment() {
 			.observe(
 				viewLifecycleOwner,
 				{
-					it.forEach { userItem ->
+					it.map { userItem ->
 						if (firebaseDBViewModel.auth.currentUser!!.uid == userItem.userId) {
 							binding.profileImageView.circleCropImage(userItem.imageUrl!!)
 							binding.nickNameHint.text = userItem.nickName
