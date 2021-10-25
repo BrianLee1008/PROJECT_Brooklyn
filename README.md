@@ -5,9 +5,9 @@
 
 1. 앱 설명 및 프로젝트 목표
 
-2. 앱 주요 기능
-3. 앱 시연
-4. 앱 Tech Stack
+2. 앱 주요 기능 및 시연
+3. 앱 Tech Stack
+4. 앱 구간별 들어간 Skill
 5. 프로젝트를 진행하며 고민한 Technical Issue
 6. 마무리
 
@@ -39,13 +39,113 @@
 
     3. 감에 의지하는 코드 스타일이 아닌 여러 이론적 토대위에서 올바른 코드를 작성하는 것이 목표 입니다.
     
+-------------------------
 
-    
---------------------
+## 2. 앱 주요 기능 및 시연
+
+### ***1. 회원가입***
+
+    1. 회원가입을 할 때 이메일과 비밀번호를 기입하지 않으면 가입을 못하도록 했습니다.
+    2. 또한 비밀번호 재확인을 했을 때 맞지 않는 경우에도 가입을 하지 못하게 했습니다.
+    3. 프로필 사진은 갤러리 / 카메라 두가지 버젼으로 설정할 수 있습니다.
+    4. 닉네임은 필수사항으로 해놨습니다.
+    5. 카메라로 사진을 찍어 프로필 이미지를 정할 수 있게 했습니다.
+    6. 카메라를 사용하든 갤러리를 사용하든 각 기능에 필요한 권한을 승인하도록 체크 했습니다.
+    7. 가입을 하면 자신이 설정한 프로필 이미지와 닉네임을 '내 공장' 페이지에서 확인할 수 있습니다.
+
+![1 SignUp_Gallery](https://user-images.githubusercontent.com/86999791/138711836-e7a57e56-3e3f-4beb-a34c-a70e9489ce03.gif)
+![2 SignUp_Camera](https://user-images.githubusercontent.com/86999791/138711853-87449977-ad97-49aa-a134-4f48aa7d57a9.gif)
+
+### ***2. 로그인***
+
+    1. 추후 SNS로그인 기능을 만들기 위해 로그인 방법을 따로 모으는 UI Controller를 구성했습니다.
+    2. 이메일과 비밀번호를 입력하지 않으면 가입하지 못하도록 해놨습니다.
+    3. 로그인을 하면 가입할 때, 혹은 업데이트한 프로필 이미지와 닉네임을 확인 할 수 있습니다.
+
+![3 login](https://user-images.githubusercontent.com/86999791/138711864-8ab75077-fce2-4700-87ea-a9ee4bb33cee.gif)
+
+
+### ***3. 프로필 변경 후 저장***
+
+    1. 프로필은 언제든지 변경하고 업데이트 할 수 있습니다.
+    2. 마찬가지로 갤러리 / 카메라 두 가지 방법으로 프로필을 업데이트 할 수 있습니다.
+
+![4 UpdateProfile](https://user-images.githubusercontent.com/86999791/138711866-5afa1bfc-4c70-405e-925e-8676bcf60f15.gif)
+
+### ***4. 아이템 등록 - 아이템 리스트에서 등록한 아이템 확인***
+
+    1. 자신이 팔고싶은 물건을 등록할 수 있습니다.
+    2. 이미지는 갤러리에서 복수로 선택할 수 있고, 카메라로 찍어 올릴 수도 있습니다.
+    3. 업로드한 이미지를 클릭해서 지울 수 있습니다.
+    4. 물건을 업로드 하면 '오늘의 매물' 페이지에서 확인할 수 있습니다.
+
+![5  UploadArticle_CheckingList](https://user-images.githubusercontent.com/86999791/138714332-ffa2546a-9ebc-4565-8342-50f087fab89c.gif)
+
+### ***5. 다른 사람 물건 상세페이지에서 채팅거래 누르고 채팅 리스트 확인***
+
+    1. 관심이 있는 물건을 누르면 상세페이지로 이동해 정보를 볼 수 있습니다.
+    2. 다른사람이 올린 이미지를 스와이프 형식으로 넘겨볼 수 있습니다.
+    3. 물건을 사고 싶은 마음이 생기면 '판매자와 채팅하기' 버튼을 눌러 채팅방을 만들 수 있습니다.
+    4. 채팅 목록에서 만들어진 채팅방을 확인할 수 있습니다.
+
+![6  CheckArticles](https://user-images.githubusercontent.com/86999791/138714342-d0cf5721-3796-4007-b106-8494affc08ec.gif)
+
+### ***6. 상대방과 실시간 채팅***
+
+    1. 판매자와 실시간 채팅을 할 수 있습니다.
+
+![7  Chating](https://user-images.githubusercontent.com/86999791/138714352-6253c807-d25a-4969-940d-9f9dab7a357e.gif)
+
+### ***7. 지도에서 내 현 위치 클릭 - 지도에 근처 주유소 검색 후 검색기록 확인, 지우기***
+
+    1. 지도를 열어 현재 나의 위치를 확인할 수 있습니다.
+    2. 검색을 통해 알고자 하는 위치의 마커를 볼 수 있습니다.
+    3. 검색한 검색어는 최근 검색어에 저장 됩니다.
+    4. 최근 검색어는 원한다면 삭제할 수 있습니다.
+    5. 위치 정보를 인터렉션한 위젯으로 확인할 수 있습니다.
+
+![8  Location](https://user-images.githubusercontent.com/86999791/138714363-97c03c5e-3eac-4dab-ba22-acc07130f15c.gif)
+
+-----------------------
+
+## 3. 앱 Tech Stack
+
+### ****- Skill****
+
+- 🔤 Language
+    - Kotlin
+        
+- 🏢 Architecture
+    - MVVM
+    - Google Architecture
+
+- 📚 Lybrary
+    - Glide
+    - ViewPager2
+    - Retrofit2
+    - Room
+
+- 🔥 Firebase
+    - Authentication
+    - RealTime Database
+    - Storage
+
+- 💾 API
+    - Google Map API
+    - T-Map POI API
+    - Hyundai API
+
+- ⚙️ ETC
+    - AAC
+    - Coroutine
+    - UI Custom - Constraint Layout / Coordinator Layout
+    - Lifecycle
+
+-------------------------------
 
 
 
-## 2. 앱 주요 기능
+## 4. 앱 구간별 들어간 Skill
 
 ### ***1. 회원가입 & 로그인 후 내 프로필 변경***
 
@@ -56,12 +156,12 @@
 
     프로필 설정 (권한체크 - 갤러리, 카메라 기능)  
 
-<img src="https://user-images.githubusercontent.com/86999791/138660762-10c1bf70-67f6-428d-a8af-d52ce4be6503.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660767-44efae4d-75e7-43d3-b06f-ae7bbd3b3195.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <!-- <img src="https://user-images.githubusercontent.com/86999791/138660771-431a9e15-9a88-437c-b3f8-d58a8c7a4550.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> --> <img src="https://user-images.githubusercontent.com/86999791/138660775-3f2b9650-62b5-444a-b01d-c80312479a59.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660777-02c4062f-0de2-48cb-ac5f-9aeaf1640c92.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <!-- <img src="https://user-images.githubusercontent.com/86999791/138660780-d1888ce5-2b2d-49be-be22-c8c8ec0370f6.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> --> <img src="https://user-images.githubusercontent.com/86999791/138660783-24e7791b-df48-4af1-aeee-abb6405ae055.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660786-931b518d-2c91-439c-8f67-a49f5e33143d.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660762-10c1bf70-67f6-428d-a8af-d52ce4be6503.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660783-24e7791b-df48-4af1-aeee-abb6405ae055.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660786-931b518d-2c91-439c-8f67-a49f5e33143d.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 
 
     내 프로필 업데이트 (Firebase DB 저장)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660793-aca9881d-dc47-4296-a7d3-3a148189c66a.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660796-f57bf7b6-967d-48e9-b0dd-952891a655a8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660799-b2bad8f2-2e26-4f06-b7d0-1867203fc023.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660810-48cb4403-4aba-4e31-a24e-0c46ce4699a0.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660812-8ee9bf41-c0a0-4cd6-8e36-a0910b878f81.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660796-f57bf7b6-967d-48e9-b0dd-952891a655a8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660810-48cb4403-4aba-4e31-a24e-0c46ce4699a0.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660812-8ee9bf41-c0a0-4cd6-8e36-a0910b878f81.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
 
@@ -129,67 +229,8 @@
     3. 아이템 상세페이지 Coordinator 디자인 적용해 좀더 인터렉션하게 확장
     4. 등록한 아이템 수정 기능
 
--------------------------
 
-## 3. 앱 시연
-
-..GIF 로 앱 시연 -> 설명
-
-1. 회원가입, 로그인 (권한)
-
-2. 프로필 변경 후 저장
-
-3. 아이템 등록 - 아이템 리스트에서 등록한 아이템 확인
-
-4. 다른 사람 아이템 상세페이지에서 채팅거래 누르고 채팅 리스트 확인
-
-5. 상대방과 실시간 채팅
-
-6. 지도에서 내 현 위치 클릭 - 지도에 근처 주유소 검색 후 검색기록 확인, 지우기
-
-7. 지도에서 정비소 검색 후 마커 확인, 정비소 세부 사항은 BottomSheet에서 확인
-
-### ***🔨 업데이트 예정 🔨***
-
-9. 내 아이템 상세 페이지에서 뷰페이지 이미지 확인 후 아이템 수정. 저장
-
-
----------------------
-
-## 4. 앱 Tech Stack
-
-### ****- Skill****
-
-- 🔤 Language
-    - Kotlin
-        
-- 🏢 Architecture
-    - MVVM
-    - Google Architecture
-
-- 📚 Lybrary
-    - Glide
-    - ViewPager2
-    - Retrofit2
-    - Room
-
-- 🔥 Firebase
-    - Authentication
-    - RealTime Database
-    - Storage
-
-- 💾 API
-    - Google Map API
-    - T-Map POI API
-    - Hyundai API
-
-- ⚙️ ETC
-    - AAC
-    - Coroutine
-    - UI Custom - Constraint Layout / Coordinator Layout
-    - Lifecycle
-
--------------------
+-----------------------
 
 ## 5. 프로젝트를 진행하며 고민한 Issue
 
