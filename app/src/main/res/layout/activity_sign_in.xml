@@ -106,6 +106,8 @@
                 android:background="@drawable/simple_box"
                 android:fontFamily="@font/wemakeprice_regular"
                 android:paddingHorizontal="10dp"
+                android:inputType="text"
+                android:maxLines="1"
                 android:paddingVertical="12dp"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"

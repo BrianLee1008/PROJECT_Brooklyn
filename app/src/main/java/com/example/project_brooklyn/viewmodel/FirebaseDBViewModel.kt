@@ -197,6 +197,7 @@ class FirebaseDBViewModel(private val repository: DBRepository) : ViewModel() {
 	fun uploadMessageInDB(
 		userId: String,
 		sellerNickName: String,
+		sellerProfileImageUrl : String,
 		message: String,
 		currentTime: Long = System.currentTimeMillis(),
 		articleTitle: String,
@@ -205,6 +206,7 @@ class FirebaseDBViewModel(private val repository: DBRepository) : ViewModel() {
 		val messageInfo = ChatRoomItem(
 			userId = userId,
 			sellerNickName = sellerNickName,
+			sellerProfileImageUrl = sellerProfileImageUrl,
 			message = message,
 			currentTime = currentTime,
 			articleTitle = articleTitle

@@ -15,6 +15,7 @@ import com.example.project_brooklyn.viewmodel.repository.DBRepository
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import kotlinx.android.synthetic.main.item_message_box.*
 import java.util.*
 
 class ChatRoomActivity : AppCompatActivity() {
@@ -67,6 +68,7 @@ class ChatRoomActivity : AppCompatActivity() {
 		setSendButtonListener(
 			userId = firebaseViewModel.auth.currentUser!!.uid,
 			sellerNickName = chatInfo.sellerNickName,
+			sellerProfileImageUrl = chatInfo.sellerProfileImageUrl,
 			articleTitle = chatInfo.articleTitle
 		)
 
@@ -91,6 +93,7 @@ class ChatRoomActivity : AppCompatActivity() {
 	private fun setSendButtonListener(
 		userId: String,
 		sellerNickName: String,
+		sellerProfileImageUrl: String,
 		articleTitle: String
 	) = with(binding) {
 		sendButton.setOnClickListener {
@@ -98,6 +101,7 @@ class ChatRoomActivity : AppCompatActivity() {
 			firebaseViewModel.uploadMessageInDB(
 				userId = userId,
 				sellerNickName = sellerNickName,
+				sellerProfileImageUrl = sellerProfileImageUrl,
 				message = messageEditText.text.toString(),
 				articleTitle = articleTitle,
 				key = key!!

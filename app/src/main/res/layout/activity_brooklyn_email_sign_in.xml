@@ -8,143 +8,144 @@
     tools:context=".signinup.BrooklynEmailSignInActivity">
 
 
-            <ImageView
-                android:id="@+id/mainLogoImageView"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/logo_brooklyn"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.05" />
+    <ImageView
+        android:id="@+id/mainLogoImageView"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/logo_brooklyn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05" />
 
-            <TextView
-                android:id="@+id/detailReferenceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/detailReferenceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/wemakeprice_bold"
-                android:text="로그인을 위해 이메일과 비밀번호를 적어주세요"
-                android:textColor="@color/mone_long_green"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mainLogoImageView" />
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/wemakeprice_bold"
+        android:text="로그인을 위해 이메일과 비밀번호를 적어주세요"
+        android:textColor="@color/mone_long_green"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainLogoImageView" />
 
-            <TextView
-                android:id="@+id/id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:fontFamily="@font/wemakeprice_semibold"
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/wemakeprice_semibold"
 
-                android:text="이메일"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detailReferenceTextView" />
+        android:text="이메일"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detailReferenceTextView" />
 
-            <EditText
-                android:id="@+id/emailEditText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/simple_box"
-                android:fontFamily="@font/wemakeprice_regular"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="12dp"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/id"
-                tools:text="Email" />
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/simple_box"
+        android:fontFamily="@font/wemakeprice_regular"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="12dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id"
+        tools:text="Email" />
 
-            <TextView
-                android:id="@+id/emailErrorCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="필수 정보입니다."
-                android:textColor="@color/carculator_red"
-                android:textSize="12sp"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/emailEditText"
-                app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+    <TextView
+        android:id="@+id/emailErrorCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="필수 정보입니다."
+        android:textColor="@color/carculator_red"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/emailEditText"
+        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
 
-            <TextView
-                android:id="@+id/password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/wemakeprice_semibold"
+    <TextView
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/wemakeprice_semibold"
 
-                android:text="비밀번호"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+        android:text="비밀번호"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
 
-            <EditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/simple_box"
-                android:fontFamily="@font/wemakeprice_regular"
-                android:inputType="textPassword"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="12dp"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/password"
-                tools:text="Password" />
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/simple_box"
+        android:fontFamily="@font/wemakeprice_regular"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="12dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password"
+        tools:text="Password" />
 
-            <TextView
-                android:id="@+id/passwordEmptyCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="필수 정보입니다."
-                android:textColor="@color/carculator_red"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordEditText"/>
+    <TextView
+        android:id="@+id/passwordEmptyCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="필수 정보입니다."
+        android:textColor="@color/carculator_red"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/passwordEditText"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
-            <TextView
-                android:id="@+id/passwordErrorCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="최소 8자 이상 기입해야 합니다."
-                android:textColor="@color/carculator_red"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"
-                android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordEditText"/>
+    <TextView
+        android:id="@+id/passwordErrorCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="최소 8자 이상 기입해야 합니다."
+        android:textColor="@color/carculator_red"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/passwordEditText"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
 
+    <!--EditText가 비어있으면 버튼 비활성화 시킬 것이기 때문에 enabled 값 false로-->
 
-            <!--EditText가 비어있으면 버튼 비활성화 시킬 것이기 때문에 enabled 값 false로-->
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/signInButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="34dp"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/sign_button"
-                android:fontFamily="@font/wemakeprice_semibold"
-                android:text="로그인 하기"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/passwordErrorCheck" />
-
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signInButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/sign_button"
+        android:fontFamily="@font/wemakeprice_semibold"
+        android:text="로그인 하기"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordErrorCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

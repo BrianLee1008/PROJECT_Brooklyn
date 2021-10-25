@@ -23,8 +23,8 @@
             <ImageView
                 android:id="@+id/mainLogoImageView"
                 android:layout_width="120dp"
-                android:background="@drawable/logo_brooklyn"
                 android:layout_height="120dp"
+                android:background="@drawable/logo_brooklyn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,6 +65,8 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/simple_box"
                 android:fontFamily="@font/wemakeprice_regular"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="12dp"
                 android:textSize="16sp"
@@ -80,6 +82,7 @@
                 android:layout_marginTop="4dp"
                 android:text="필수 정보입니다."
                 android:textColor="@color/carculator_red"
+
                 android:textSize="12sp"
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="@id/emailEditText"
@@ -106,6 +109,7 @@
                 android:background="@drawable/simple_box"
                 android:fontFamily="@font/wemakeprice_regular"
                 android:inputType="textPassword"
+                android:maxLines="1"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="12dp"
                 android:textSize="16sp"
@@ -118,25 +122,25 @@
                 android:id="@+id/passwordEmptyCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="필수 정보입니다."
                 android:textColor="@color/carculator_red"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordEditText"/>
+                app:layout_constraintStart_toStartOf="@id/passwordEditText"
+                app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
             <TextView
                 android:id="@+id/passwordErrorCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="최소 8자 이상 기입해야 합니다."
                 android:textColor="@color/carculator_red"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordEditText"/>
+                app:layout_constraintStart_toStartOf="@id/passwordEditText"
+                app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
             <TextView
                 android:id="@+id/passwordCheck"
@@ -159,6 +163,7 @@
                 android:background="@drawable/simple_box"
                 android:fontFamily="@font/wemakeprice_regular"
                 android:inputType="textPassword"
+                android:maxLines="1"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="12dp"
                 android:textSize="16sp"
@@ -171,26 +176,25 @@
                 android:id="@+id/checkPasswordEmptyCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="필수 정보입니다."
                 android:textColor="@color/carculator_red"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordCheckEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordCheckEditText"/>
+                app:layout_constraintStart_toStartOf="@id/passwordCheckEditText"
+                app:layout_constraintTop_toBottomOf="@id/passwordCheckEditText" />
 
             <TextView
                 android:id="@+id/checkPasswordErrorCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="일치하지 않습니다."
                 android:textColor="@color/carculator_red"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp"
                 android:visibility="invisible"
-                app:layout_constraintTop_toBottomOf="@id/passwordCheckEditText"
-                app:layout_constraintStart_toStartOf="@id/passwordCheckEditText"/>
-
+                app:layout_constraintStart_toStartOf="@id/passwordCheckEditText"
+                app:layout_constraintTop_toBottomOf="@id/passwordCheckEditText" />
 
 
             <!--EditText가 비어있으면 버튼 비활성화 시킬 것이기 때문에 enabled 값 false로-->

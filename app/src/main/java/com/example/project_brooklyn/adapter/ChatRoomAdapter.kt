@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_brooklyn.databinding.ItemMessageBoxBinding
+import com.example.project_brooklyn.extensions.circleCropImage
 import com.example.project_brooklyn.item.ChatRoomItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -41,6 +42,8 @@ class 	ChatRoomAdapter : ListAdapter<ChatRoomItem, ChatRoomAdapter.ChatRoomViewH
 				buyerMessageTextView.isVisible = true
 			} else {
 				sellerMessageTextView.text = chatRoomItem.message
+				sellerProfileImageView.circleCropImage(chatRoomItem.sellerProfileImageUrl)
+				sellerProfileImageView.isVisible = true
 				sellerMessageTextView.isVisible = true
 			}
 

@@ -60,6 +60,7 @@ class ChatListFragment : Fragment() {
 				val chatRoomInfo = ChatRoomItem(
 					userId = chatRoomListItem.buyerNickName,
 					sellerNickName = chatRoomListItem.sellerNickName,
+					sellerProfileImageUrl = chatRoomListItem.buyerProfileImage,
 					message = "",
 					currentTime = chatRoomListItem.currentTime,
 					articleTitle = chatRoomListItem.articleTitle

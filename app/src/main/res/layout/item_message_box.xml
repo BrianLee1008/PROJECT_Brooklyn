@@ -15,10 +15,20 @@
         android:fontFamily="@font/wemakeprice_regular"
         android:padding="12dp"
         android:textColor="@color/black"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
         tools:text="안녕하세요?" />
+
+    <ImageView
+        android:id="@+id/sellerProfileImageView"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/sellerMessageTextView"
@@ -27,10 +37,12 @@
         android:background="@drawable/seller_message_box"
         android:fontFamily="@font/wemakeprice_regular"
         android:padding="12dp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
+        android:textColor="@color/white"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toEndOf="@id/sellerProfileImageView"
+        app:layout_constraintTop_toBottomOf="@id/sellerProfileImageView"
+        app:layout_constraintBottom_toBottomOf="@id/sellerProfileImageView"
         tools:text="네 안녕하세요. 반갑습니다." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
