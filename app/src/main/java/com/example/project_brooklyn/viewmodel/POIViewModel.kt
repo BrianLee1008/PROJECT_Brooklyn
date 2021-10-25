@@ -31,7 +31,7 @@ class POIViewModel(private val repository: RetrofitRepository) : ViewModel() {
 	val poiResultLiveData: LiveData<SearchResultItem>
 		get() = _poiResultLiveData
 
-	fun insertSearchResult(searchResultItem: SearchResultItem){
+/*	fun insertSearchResult(searchResultItem: SearchResultItem){
 			val data = SearchResultItem(
 				fullAddress = searchResultItem.fullAddress,
 				locationName = searchResultItem.locationName,
@@ -40,8 +40,8 @@ class POIViewModel(private val repository: RetrofitRepository) : ViewModel() {
 					longitude = searchResultItem.locationLatLngItem.longitude
 				)
 			)
-		//xo 여기서 값이 안들어감
+		//xo 여기서 값이 안들어감 - postValue로 해보고 된다면 이유 찾기
 			_poiResultLiveData.value = data
 
-	}
+	}*/
 }

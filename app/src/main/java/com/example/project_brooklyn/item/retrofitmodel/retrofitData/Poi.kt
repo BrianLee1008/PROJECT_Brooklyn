@@ -58,16 +58,16 @@ data class Poi(
 	//업소명
 	val bizName: String? = null,
 
-	//시설목적
+	//대분류명입니다
 	val upperBizName: String? = null,
 
-	//시설분류
+	//중분류명입니다
 	val middleBizName: String? = null,
 
-	//시설이름 ex) 지하철역 병원 등
+	//소분류명입니다 ex) 지하철역 병원 등
 	val lowerBizName: String? = null,
 
-	//상세 이름
+	//상세분류명입니다
 	val detailBizName: String? = null,
 
 	//길안내 요청 유무
@@ -84,5 +84,6 @@ data class Poi(
 
 	//도로명 풀네임
 	val fullAddressRoad: String? = null
+
 ) {
 }

@@ -1,5 +1,6 @@
 package com.example.project_brooklyn.map
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.map_bottom_sheet_view.*
 
 
 class ResultMarkerMapActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -60,7 +62,10 @@ class ResultMarkerMapActivity : AppCompatActivity(), OnMapReadyCallback,
 			}
 		}
 
+		initViews(searchResultItem)
+
 	}
+
 
 	private fun initGoogleMap() {
 
@@ -93,7 +98,6 @@ class ResultMarkerMapActivity : AppCompatActivity(), OnMapReadyCallback,
 		) {
 			map.isMyLocationEnabled = true
 		}
-
 
 
 	}
@@ -143,6 +147,16 @@ class ResultMarkerMapActivity : AppCompatActivity(), OnMapReadyCallback,
 		}
 
 		return map.addMarker(markerOption) ?: throw Exception("마커 데이터를 가져오지 못했어요")
+	}
+
+	@SuppressLint("SetTextI18n")
+	private fun initViews(searchResultItem: SearchResultItem) = with(binding) {
+		locationNameTextView.text = "건물(상호)명 : ${searchResultItem.locationName}"
+		fullAddressTextView.text = "주소 : ${searchResultItem.fullAddress}"
+		categoryDetailInfoTextView.text =
+			"${searchResultItem.upperBizName} > ${searchResultItem.middleBizName} > ${searchResultItem.lowerBizName}"
+		telNumberTextView.text = searchResultItem.telNumber
+
 	}
 
 

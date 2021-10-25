@@ -140,12 +140,18 @@ class SearchResultActivity : AppCompatActivity() {
 
 	}
 
-
+	// POI에서 데이터 가져와 submitList
 	private fun setSearchResultItem(pois: Pois) = with(binding) {
 		dataList = pois.poi.map {
+			val fullAddressName = "${it.upperAddrName} ${it.middleAddrName} ${it.lowerAddrName} ${it.detailAddrName}"
 			SearchResultItem(
 				locationName = it.name ?: "건물명 없음",
-				fullAddress = it.roadName.toString(),
+				fullAddress = fullAddressName ?: "주소 없음",
+				telNumber = it.telNo.toString(),
+				upperBizName = it.upperBizName.toString(),
+				middleBizName = it.middleBizName.toString(),
+				lowerBizName = it.lowerBizName.toString(),
+				desc = it.desc.toString(),
 				locationLatLngItem = LocationLatLngItem(
 					// 좌표값 명시
 					latitude = it.noorLat,

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bottom_sheet_box"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:behavior_fitToContents="false"
-    app:behavior_peekHeight="46dp"
     app:behavior_expandedOffset="72dp"
-    app:behavior_halfExpandedRatio="0.36">
+    app:behavior_fitToContents="false"
+    app:behavior_halfExpandedRatio="0.36"
+    app:behavior_peekHeight="46dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <!--behavior_fitToContents false 하면드래그 시 절반접힘
         behavior_expandedOffset 끝까지 드래그 시 빈공간 얼마나 남길지
@@ -32,12 +32,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/wemakeprice_bold"
+        android:text="위치 정보"
         android:textColor="@color/mone_extra_long_green"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottomSheetLine"
-        android:text="위치 정보" />
+        app:layout_constraintTop_toBottomOf="@id/bottomSheetLine" />
 
     <View
         android:id="@+id/behaviorLine"
@@ -49,30 +49,81 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/InfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:fontFamily="@font/wemakeprice_semibold"
+        android:text=" -건물 정보 -"
+        android:textColor="@color/mone_little_green"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/behaviorLine" />
+
 
     <TextView
         android:id="@+id/locationNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/wemakeprice_semibold"
         android:textColor="@color/mone_extra_long_green"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/behaviorLine"
+        app:layout_constraintStart_toStartOf="@id/InfoTextView"
+        app:layout_constraintTop_toBottomOf="@id/InfoTextView"
         tools:text="건물(상호)명 : 동백역 에버라인" />
+
+    <TextView
+        android:id="@+id/telNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/wemakeprice_regular"
+        android:textColor="@color/mone_long_green"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/locationNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/locationNameTextView"
+        app:layout_constraintTop_toTopOf="@id/locationNameTextView"
+        tools:text="031-745-1727" />
 
 
     <TextView
         android:id="@+id/fullAddressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/wemakeprice_semibold"
         android:layout_marginTop="4dp"
+        android:fontFamily="@font/wemakeprice_semibold"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/locationNameTextView"
         app:layout_constraintTop_toBottomOf="@id/locationNameTextView"
         tools:text="주소 : 경기도 용인시 기흥구 동백" />
+
+    <TextView
+        android:id="@+id/categoryInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/wemakeprice_semibold"
+        android:text="- 분류 / 카테고리 -"
+        android:textColor="@color/mone_little_green"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/locationNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/fullAddressTextView" />
+
+    <TextView
+        android:id="@+id/categoryDetailInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/wemakeprice_semibold"
+        android:textColor="@color/mone_long_green"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/locationNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/categoryInfoTextView"
+        tools:text="생활/편의 > 가구 > 잡화 > 소모품" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
