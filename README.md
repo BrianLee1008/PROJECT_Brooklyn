@@ -52,30 +52,17 @@
 
     브루클린 회원가입 (Firebase Authentication 이메일 로그인)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660752-cad63799-bdcc-45de-86ee-1b28c7ae2aed.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660754-889e4ce6-ee69-40f0-9806-e7def66be813.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660757-1f1d482a-145d-422f-b607-36ea294725ec.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660752-cad63799-bdcc-45de-86ee-1b28c7ae2aed.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660754-889e4ce6-ee69-40f0-9806-e7def66be813.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660757-1f1d482a-145d-422f-b607-36ea294725ec.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
     프로필 설정 (권한체크 - 갤러리, 카메라 기능)  
 
-<img src="https://user-images.githubusercontent.com/86999791/138660762-10c1bf70-67f6-428d-a8af-d52ce4be6503.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660767-44efae4d-75e7-43d3-b06f-ae7bbd3b3195.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<!-- <img src="https://user-images.githubusercontent.com/86999791/138660771-431a9e15-9a88-437c-b3f8-d58a8c7a4550.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> -->
-<img src="https://user-images.githubusercontent.com/86999791/138660775-3f2b9650-62b5-444a-b01d-c80312479a59.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660777-02c4062f-0de2-48cb-ac5f-9aeaf1640c92.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<!-- <img src="https://user-images.githubusercontent.com/86999791/138660780-d1888ce5-2b2d-49be-be22-c8c8ec0370f6.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> -->
-<img src="https://user-images.githubusercontent.com/86999791/138660783-24e7791b-df48-4af1-aeee-abb6405ae055.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660786-931b518d-2c91-439c-8f67-a49f5e33143d.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660762-10c1bf70-67f6-428d-a8af-d52ce4be6503.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660767-44efae4d-75e7-43d3-b06f-ae7bbd3b3195.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <!-- <img src="https://user-images.githubusercontent.com/86999791/138660771-431a9e15-9a88-437c-b3f8-d58a8c7a4550.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> --> <img src="https://user-images.githubusercontent.com/86999791/138660775-3f2b9650-62b5-444a-b01d-c80312479a59.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660777-02c4062f-0de2-48cb-ac5f-9aeaf1640c92.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <!-- <img src="https://user-images.githubusercontent.com/86999791/138660780-d1888ce5-2b2d-49be-be22-c8c8ec0370f6.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> --> <img src="https://user-images.githubusercontent.com/86999791/138660783-24e7791b-df48-4af1-aeee-abb6405ae055.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660786-931b518d-2c91-439c-8f67-a49f5e33143d.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 
 
     내 프로필 업데이트 (Firebase DB 저장)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660793-aca9881d-dc47-4296-a7d3-3a148189c66a.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660796-f57bf7b6-967d-48e9-b0dd-952891a655a8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660799-b2bad8f2-2e26-4f06-b7d0-1867203fc023.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660810-48cb4403-4aba-4e31-a24e-0c46ce4699a0.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660812-8ee9bf41-c0a0-4cd6-8e36-a0910b878f81.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660793-aca9881d-dc47-4296-a7d3-3a148189c66a.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660796-f57bf7b6-967d-48e9-b0dd-952891a655a8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660799-b2bad8f2-2e26-4f06-b7d0-1867203fc023.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660810-48cb4403-4aba-4e31-a24e-0c46ce4699a0.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660812-8ee9bf41-c0a0-4cd6-8e36-a0910b878f81.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
 
@@ -83,9 +70,7 @@
 
     아이템 등록 (갤러리 - 카메라 기능이용해 복수 이미지 업로드, Firebase DB 저장 )
 
-<img src="https://user-images.githubusercontent.com/86999791/138660816-d96afb37-b826-453f-9116-b6286ce491ce.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660818-517e1879-41d8-4e69-883c-be470443c24b.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660826-c1d33161-d094-4bea-9d94-17ddb0c9fa0d.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660816-d96afb37-b826-453f-9116-b6286ce491ce.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660818-517e1879-41d8-4e69-883c-be470443c24b.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660826-c1d33161-d094-4bea-9d94-17ddb0c9fa0d.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
     아이템 등록 확인 (Firebase DB 에서 아이템 가져오기)
@@ -96,21 +81,18 @@
 ### ***3. 관심가는 다른 유저의 물품 상세보기***
 
     아이템 상세페이지 이동 (Firebase DB, ViewPager2)
-<img src="https://user-images.githubusercontent.com/86999791/138660829-53a06c92-bb60-4afd-940f-ff9bcce5f40f.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660831-4664d020-3da0-40c7-b091-96c42c7c0f95.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660829-53a06c92-bb60-4afd-940f-ff9bcce5f40f.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660831-4664d020-3da0-40c7-b091-96c42c7c0f95.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
 ### ****4. 판매자와 채팅****    
 
     채팅방 생성 (Firebase DB)
-<img src="https://user-images.githubusercontent.com/86999791/138660836-4b8dd1f6-946c-4b78-b595-afbb17e8ac7b.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660839-52e5fcb1-141c-473a-8bec-f4ccea0011cf.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660836-4b8dd1f6-946c-4b78-b595-afbb17e8ac7b.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660839-52e5fcb1-141c-473a-8bec-f4ccea0011cf.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
     실시간 채팅 (Firebase DB)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660841-e385df96-38de-411c-ad99-2db0b692a8d8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660849-8c2433cc-dc69-4713-bb2f-b4b79fd0933c.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660841-e385df96-38de-411c-ad99-2db0b692a8d8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660849-8c2433cc-dc69-4713-bb2f-b4b79fd0933c.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 
 </img><br/>
 
@@ -119,28 +101,24 @@
 
     지도 (GoogleMap API, Retrofit2, 현재 위치 권한 체크)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660851-3226c74d-e86e-40d1-ad15-ba6986b9d0f8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660855-eb040021-2f18-43c5-8616-87ab0a678393.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660851-3226c74d-e86e-40d1-ad15-ba6986b9d0f8.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660855-eb040021-2f18-43c5-8616-87ab0a678393.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
     위치 검색 후 최근 검색 확인 (T-Map POI API, Retrofit2, Room)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660860-0a4f10d6-edb6-4a0f-9dd6-9ee5f95dbe76.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660871-108687dc-aea1-47a0-8573-656b2d931a2c.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660860-0a4f10d6-edb6-4a0f-9dd6-9ee5f95dbe76.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660871-108687dc-aea1-47a0-8573-656b2d931a2c.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
 
     검색한 위치 기반 POI 데이터 Google Map에 마커 찍고 정보 확인 
     (GoogleMap API, T-Map POI API, Retrofit2, CoordinatorLayout)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660869-98d49355-5c6b-4fe5-97ab-41e0bc819037.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138660864-002f9f95-1654-4b8d-9beb-5e15c3456498.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660869-98d49355-5c6b-4fe5-97ab-41e0bc819037.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138660864-002f9f95-1654-4b8d-9beb-5e15c3456498.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
     최근 검색어 삭제 (Room)
 
-<img src="https://user-images.githubusercontent.com/86999791/138660871-108687dc-aea1-47a0-8573-656b2d931a2c.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
-<img src="https://user-images.githubusercontent.com/86999791/138669687-ed92ff80-e17d-43ea-bdd3-35b16514c037.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
+<img src="https://user-images.githubusercontent.com/86999791/138660871-108687dc-aea1-47a0-8573-656b2d931a2c.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck"> <img src="https://user-images.githubusercontent.com/86999791/138669687-ed92ff80-e17d-43ea-bdd3-35b16514c037.jpg" width="288px" height="640px" title="px(픽셀) 크기 설정" alt="RubberDuck">
 </img><br/>
 
 
