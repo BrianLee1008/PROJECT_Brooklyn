@@ -117,7 +117,6 @@
         
 - 🏢 Architecture
     - MVVM
-    - Google Architecture
 
 - 📚 Lybrary
     - Glide
@@ -138,8 +137,7 @@
 - ⚙️ ETC
     - AAC
     - Coroutine
-    - UI Custom - Constraint Layout / Coordinator Layout
-    - Lifecycle
+    - Coordinator Layout
 
 -------------------------------
 
