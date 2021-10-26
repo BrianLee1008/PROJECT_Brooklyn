@@ -131,7 +131,6 @@
 - 💾 API
     - Google Map API
     - T-Map POI API
-    - Hyundai API
 
 - ⚙️ ETC
     - AAC
