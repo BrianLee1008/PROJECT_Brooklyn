@@ -37,7 +37,13 @@ class DBRepository {
 				userLiveData.value = userList
 			}
 
-			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+				val model = snapshot.getValue(UserItem::class.java)
+				model ?: return
+
+				userList.add(model)
+				userLiveData.value = userList
+			}
 
 			override fun onChildRemoved(snapshot: DataSnapshot) {}
 			override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -64,7 +70,13 @@ class DBRepository {
 				articleListLiveData.value = articleList
 			}
 
-			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+				val model = snapshot.getValue(ArticleListItem::class.java)
+				model ?: return
+
+				articleList.add(model)
+				articleListLiveData.value = articleList
+			}
 			override fun onChildRemoved(snapshot: DataSnapshot) {
 				val model = snapshot.getValue(ArticleListItem::class.java)
 				model ?: return
@@ -95,7 +107,13 @@ class DBRepository {
 				chatListLiveData.value = chatList
 			}
 
-			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+			override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+				val model = snapshot.getValue(ChatRoomListItem::class.java)
+				model ?: return
+
+				chatList.add(model)
+				chatListLiveData.value = chatList
+			}
 			override fun onChildRemoved(snapshot: DataSnapshot) {
 				val model = snapshot.getValue(ChatRoomListItem::class.java)
 				model ?: return

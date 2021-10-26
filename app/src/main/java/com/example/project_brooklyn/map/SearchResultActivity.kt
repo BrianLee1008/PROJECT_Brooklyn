@@ -26,11 +26,6 @@ import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.item_recent_search.*
 import kotlinx.coroutines.*
 
-/**
- * 3. 최근검색보기는 Room으로 구성. 검색창 다시 클릭하면 뜨게... 프로그래스 바 추가.
- * 6. 마커 표시한 곳에 대한 정보 BottomSheet에 표시
- * */
-
 class SearchResultActivity : AppCompatActivity() {
 
 	private lateinit var searchResultAdapter: SearchResultAdapter

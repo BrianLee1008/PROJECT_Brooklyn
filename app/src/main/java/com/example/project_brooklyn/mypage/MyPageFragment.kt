@@ -73,6 +73,7 @@ class MyPageFragment : Fragment() {
 							binding.profileImageView.circleCropImage(userItem.imageUrl!!)
 							binding.nickNameHint.text = userItem.nickName
 						}
+
 					}
 				}
 			)

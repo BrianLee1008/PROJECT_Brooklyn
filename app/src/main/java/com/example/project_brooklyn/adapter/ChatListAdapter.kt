@@ -22,7 +22,6 @@ class ChatListAdapter(private val chatListClickListener : (ChatRoomListItem) -> 
 			): Boolean =
 				oldItem == newItem
 
-			// TODO 메세지 업데이트 시 갱신하도록
 			override fun areContentsTheSame(
 				oldItem: ChatRoomListItem,
 				newItem: ChatRoomListItem
